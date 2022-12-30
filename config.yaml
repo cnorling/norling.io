@@ -1,14 +1,14 @@
-baseurl: https://salinesel.in
+baseurl: https://norling.io
 languageCode: en-us
 paginate: 5
-title: Saline Selin
+title: Cerise Norling
 author:
-  name: salineselin
+  name: cnorling
 
 languages:
   en:
     languageName: English
-    title: Saline Selin
+    title: Cerise Norling
     weight: 1
 
 # Change it to your Disqus shortname before using
@@ -187,12 +187,12 @@ menu:
   social:
     - identifier: github
       name: GitHub
-      url: https://github.com/salineselin
+      url: https://github.com/cnorling
       params:
         icon: brand-github
     - identifier: rss
       name: RSS
-      url: https://salinesel.in/index.xml
+      url: https://norling.io/index.xml
       params:
         icon: rss
 
