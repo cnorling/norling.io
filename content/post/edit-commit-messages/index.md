@@ -1,10 +1,10 @@
 ---
 title: "Editing Git Commit Messages"
 description:
-date: 2023-02-25T10:00:00-06:00
+date: 2023-02-26T10:00:00-06:00
 slug: "edit-commit-messages"
 image: stars-gdb805d2e7_1920.jpg
-draft: true
+draft: false
 tags:
   - git
 ---
