@@ -25,9 +25,10 @@ If you've worked with git, you've likely needed to do at least one of these at s
 
 A git rebase is the act of disassembling and reassembling a range of commits. The function's name comes from its original purpose of changing the forked location of your branch to a different commit or branch.
 
-![an example of what happens when you use git rebase to transplant your commits](rebase-transplant.png)
+## How do I Git Rebase?
 
-## Determine What Commits to Rebase
+
+### Determine What Commits to Rebase
 
 You can use most valid forms of [gitrevision syntax](https://git-scm.com/docs/gitrevisions), but `git log --oneline` and `git reflog` are the most common options for discovering historical edits. `git log --oneline` will only show you commits. `git reflog` will show you commits in addition to actions you take like checking out branches, other rebases you've done, git resets, commit amends, and other historical modifications made to git. The only time I use referential syntax is if I'm recovering a previously deleted commit since git will locally log the commit even after deleting it.
 
@@ -44,6 +45,48 @@ Here's a table of a few valid gitrevision syntaxes you can use in a rebase, and 
 |`':/^Initial'`|rebase all commits made between HEAD and the first commit found with a commit message that matches the regular expression `^Initial`|
 
 ![an example of the output from git log --oneline](git-log-output.png)
+
+### Edit Your git-rebase-todo
+
+A `git-rebase-todo` file is a manifest containing all the commits in your rebase that you can edit to instruct git on what changes you want to make. It includes the action you want to do, the commit hash, and the commit message for easy identification. An example looks like this:
+
+```fish
+pick e9f16f3 baz
+pick ff783de buz
+
+# Rebase aa7b423..ff783de onto aa7b423 (2 commands)
+#
+# Commands:
+# p, pick <commit> = use commit
+# r, reword <commit> = use commit, but edit the commit message
+# e, edit <commit> = use commit, but stop for amending
+# s, squash <commit> = use commit, but meld into previous commit
+# f, fixup [-C | -c] <commit> = like "squash" but keep only the previous
+#                    commit's log message, unless -C is used, in which case
+#                    keep only this commit's message; -c is same as -C but
+#                    opens the editor
+# x, exec <command> = run command (the rest of the line) using shell
+# b, break = stop here (continue rebase later with 'git rebase --continue')
+# d, drop <commit> = remove commit
+# l, label <label> = label current HEAD with a name
+# t, reset <label> = reset HEAD to a label
+# m, merge [-C <commit> | -c <commit>] <label> [# <oneline>]
+# .       create a merge commit using the original merge commit's
+# .       message (or the oneline, if no original merge commit was
+# .       specified); use -c <commit> to reword the commit message
+#
+# These lines can be re-ordered; they are executed from top to bottom.
+#
+# If you remove a line here THAT COMMIT WILL BE LOST.
+#
+# However, if you remove everything, the rebase will be aborted.
+#
+```
+
+The only commands in that list I haven't used are exec, break, label, reset, and merge.
+
+### Make Your Modifications
+
 
 ## Deleting Commits
 
