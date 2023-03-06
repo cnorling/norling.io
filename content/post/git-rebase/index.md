@@ -85,8 +85,11 @@ pick ff783de buz
 
 The only commands in that list I haven't used are exec, break, label, reset, and merge.
 
-### Make Your Modifications
+### Start The Rebase
 
+As soon as you save the `git-rebase-todo` file and close it, the rebase will start. The first step git does is it saves all your commits into a staging area for safekeeping if you need to perform any reversions. Then it goes through each commit oldest to newest. Actions like pick, squash, fixup, and drop will be executed automatically. Actions like reword and edit will pause for you to make your requested changes. If it's a git message change, it will open the commit message file and allow you to make your changes.
+
+Edit steps are a bit more complex. Git has no idea what modifications you intend to make on the edit step, so you need to tell it when you're finished. You can make any changes you need to the commit, and once you're finished you run `git commit --amend` to add your content to the commit. Then run `git rebase --continue` to tell git you're done with the current commit.
 
 ## Deleting Commits
 
@@ -99,3 +102,5 @@ The only commands in that list I haven't used are exec, break, label, reset, and
 An example of that might be if you created branch `topic` while checked into branch `next` instead of branch `master` and you've already committed content you don't want to lose. `git rebase --help` has some nicely defined diagrams of what this would look like as illustrated below, or [here](https://git-scm.com/docs/git-rebase) if you want to read the official docs.
 
 ## Signing Older Commits
+
+The easiest way to sign your older commits is to setup your git config to automatically sign commits, then execute a rebase on all your commits. If this sounds like too much, it might be best to just leave your commits unsigned. Github has excellent documentation on setting up commit signatures [here](https://docs.github.com/en/authentication/managing-commit-signature-verification/signing-commits) and how to automatically sign commits [here](https://docs.github.com/en/authentication/managing-commit-signature-verification/telling-git-about-your-signing-key).
