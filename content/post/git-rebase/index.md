@@ -18,14 +18,13 @@ Have you or a loved one ever wanted to:
 - fix a typo in an old commit message
 - combine a bunch of commits together
 
-If you've worked with git, you've likely needed to do at least one of these at some point. And if you're like me, you've probably read over the `--help` documentation of git to figure out how to do some of these things, and oh boy the docs can be cagey about telling you what exactly to do. This article is a reference on what you can do with git rebases, and how to do it. [Here's the equivalent article](https://git-scm.com/book/en/v2/Git-Tools-Rewriting-History) directly from the git documentation if you're interested in further reading
+If you've worked with git, you've likely needed to do at least one of these at some point. And if you're like me, you've probably read over the `--help` documentation of git to figure out how to do some of these things, and oh boy the docs can be cagey about telling you what exactly to do. This article is a reference on just a few things you can do with git rebases, and how to do it. [Here's the equivalent article](https://git-scm.com/book/en/v2/Git-Tools-Rewriting-History) directly from the git documentation if you're interested in further reading.
 
 ## A Disclaimer About Controversy
 
-Rebasing involves rewriting history.
-Rewriting history involves force pushing to overwrite the remote state of a repository.
-Force pushing has the potential to delete others work (if you rebase recklessly).
-
+*Rebasing involves rewriting history.* \
+*Rewriting history involves force pushing to overwrite the remote state of a repository.* \
+*Force pushing has the potential to delete others work (if you rebase recklessly).*
 
 Rewriting history is controversial. Some say it's okay to modify history because it's sometimes necessary and can enhance git history. Others say it's not okay because git is supposed to be a historical representation of all changes, and you should prefer to roll your fixes forward. In my opinion if your historical modifications don't impact others, it should be acceptable to rewrite history. It's important when managing git history to ensure that you aren't impacting other people's work. You should follow these general practices:
 
@@ -50,7 +49,7 @@ You can use most valid forms of [gitrevision syntax](https://git-scm.com/docs/gi
 
 ![an example showcasing the differences between a git log and git reflog with git commits in their relative positions](reflog-vs-log.png)
 
-Here's a table of a few valid gitrevision syntaxes you can use in a rebase, and what they roughly translate to.
+Here's a table of some gitrevision syntaxes you can use in a rebase, and what they roughly translate to.
 
 |syntax|meaning|
 |------|-------|
@@ -106,6 +105,12 @@ The only commands in that list I haven't used are exec, break, label, reset, and
 As soon as you save the `git-rebase-todo` file and close it, the rebase will start. The first step git does is it saves all your commits into a staging area for safekeeping if you need to perform any reversions. Then it goes through each commit oldest to newest. Actions like pick, squash, fixup, and drop will be executed automatically. Actions like reword and edit will pause for you to make your requested changes. If it's a git message change, it will open the commit message file and allow you to make your changes.
 
 Edit steps are a bit more complex. Git has no idea what modifications you intend to make on the edit step, so you need to tell it when you're finished. You can make any changes you need to the commit, and once you're finished you run `git commit --amend` to add your content to the commit. Then run `git rebase --continue` to tell git you're done with the current commit.
+
+### Push up Your Rebase
+
+If you're editing any commits that aren't strictly local to your machine, you'll have to instruct your remote git website that yes, you did mean to delete that commit. To do this, run `git push --force-with-lease`. If you don't, git will reject your changes when you try and push because it thinks it has content you're missing that you need to pull down.
+
+`--force-with-lease` is the same as `--force` except it has a failsafe to abort if there are remote changes your local git client doesn't know about. Always use it when force pushing changes.
 
 ## Deleting Commits
 
