@@ -18,7 +18,7 @@ Have you or a loved one ever wanted to:
 - fix a typo in an old commit message
 - combine a bunch of commits together
 
-If you've worked with git, you've likely needed to do at least one of these at some point. And if you're like me, you've probably tried to read the `--help` documentation of git to figure out how to do some of these things, and oh boy the docs can be hard to read. This article is a reference on what you can do with git rebases, and how to do it.
+If you've worked with git, you've likely needed to do at least one of these at some point. And if you're like me, you've probably read over the `--help` documentation of git to figure out how to do some of these things, and oh boy the docs can be cagey about telling you what exactly to do. This article is a reference on what you can do with git rebases, and how to do it. [Here's the equivalent article](https://git-scm.com/book/en/v2/Git-Tools-Rewriting-History) directly from the git documentation if you're interested in further reading
 
 ## A Disclaimer About Controversy
 
