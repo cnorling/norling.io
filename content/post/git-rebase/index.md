@@ -17,8 +17,6 @@ Have you or a loved one ever wanted to:
 - include missed files in a commit
 - fix a typo in an old commit message
 - combine a bunch of commits together
-- sign older commits
-- change what branch you've forked from
 
 If you've worked with git, you've likely needed to do at least one of these at some point. And if you're like me, you've probably tried to read the `--help` documentation of git to figure out how to do some of these things, and oh boy the docs can be hard to read. This article is a reference on what you can do with git rebases, and how to do it.
 
@@ -178,12 +176,33 @@ If everything worked, the commit should be edited with a new SHA. You can run `g
 
 ## Combining Commits by Squashing
 
+- determine what commits you want to squash by running `git log --oneline` and find the hash of the oldest commit you want to squash
+```fish
+c3640e6 (HEAD -> main) 7ce9769337
+9f2e595 3c8c13dfff # let's squash these two commits 
+e1fce22 600affbb4a # let's squash these two commits
+ed85848 1186105185 # into this commit
+64378f8 c8f8d0faf9
+beeef8f Initial commit
+```
+- go one past that commit and copy its hash
+- run `git rebase --interactive 64378f8`
+- modify the `git-rebase-todo` to include your squashes
+```fish
+pick ed85848 1186105185 # this is the commit we're squashing into
+squash e1fce22 600affbb4a # these are the commits we're squashing
+squash 9f2e595 3c8c13dfff # these are the commits we're squashing
+pick c3640e6 7ce9769337
+```
+- save and close the `git-rebase-todo`
+- git will pause on the newly squashed commit and give you an opportunity to modify the commit message if desired
+- save and close the `COMMIT_EDITMSG` file to finish the rebase
+- run `git push --force-with-lease` if working with remote changes to overwrite history
+```fish
+8188e83 (HEAD -> main) 7ce9769337
+1b4f942 1186105185 # the commit has a new SHA meaning the commits were squashed in!
+64378f8 c8f8d0faf9
+beeef8f Initial commit
+```
 
-
-## Changing the Base of Your Branch
-
-An example of that might be if you created branch `topic` while checked into branch `next` instead of branch `master` and you've already committed content you don't want to lose. `git rebase --help` has some nicely defined diagrams of what this would look like as illustrated below, or [here](https://git-scm.com/docs/git-rebase) if you want to read the official docs.
-
-## Signing Older Commits
-
-The easiest way to sign your older commits is to setup your git config to automatically sign commits, then execute a rebase on all your commits. If this sounds like too much, it might be best to just leave your commits unsigned. Github has excellent documentation on setting up commit signatures [here](https://docs.github.com/en/authentication/managing-commit-signature-verification/signing-commits) and how to automatically sign commits [here](https://docs.github.com/en/authentication/managing-commit-signature-verification/telling-git-about-your-signing-key).
+If everything worked, the commit should be edited with a new SHA. You can run `git log --oneline` to validate its modification.
