@@ -211,3 +211,5 @@ beeef8f Initial commit
 ```
 
 If everything worked, the commit should be edited with a new SHA. You can run `git log --oneline` to validate its modification.
+
+If you have any questions about this article, or if you have suggestions for changes please email me@norling.io
