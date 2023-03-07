@@ -21,9 +21,26 @@ Have you or a loved one ever wanted to:
 
 If you've worked with git, you've likely needed to do at least one of these at some point. And if you're like me, you've probably tried to read the `--help` documentation of git to figure out how to do some of these things, and oh boy the docs can be hard to read. This article is a reference on what you can do with git rebases, and how to do it.
 
+## A Disclaimer About Controversy
+
+Rebasing involves rewriting history.
+Rewriting history involves force pushing to overwrite the remote state of a repository.
+Force pushing has the potential to delete others work (if you rebase recklessly).
+
+
+Rewriting history is controversial. Some say it's okay to modify history because it's sometimes necessary and can enhance git history. Others say it's not okay because git is supposed to be a historical representation of all changes, and you should prefer to roll your fixes forward. In my opinion if your historical modifications don't impact others, it should be acceptable to rewrite history. It's important when managing git history to ensure that you aren't impacting other people's work. You should follow these general practices:
+
+- Always use `--force-with-lease` when pushing out rebases.
+- Avoid rewriting history if you're collaborating with others on the same branch.
+- If you have to rebase changes while working with others, `git pull` often to always make sure you're working with the latest content.
+- Don't edit other people's commits unless they know about and consent to the edits.
+
 ## So What is a Git Rebase?
 
-A git rebase is the act of disassembling and reassembling a range of commits. The function's name comes from its original purpose of changing the forked location of your branch to a different commit or branch.
+A git rebase is the act of disassembling and reassembling a range of commits. The function's name comes from its original purpose of changing the forked location of your branch to a different commit or branch. There are two general types of rebases. Ones that require human interaction to complete, and ones that do not. A human interactive rebase would involve doing things like adding, editing, deleting, combining, and splitting commits. A noninteractive rebase would be attaching your base to a different branch.
+
+Interactive rebases are executed by running `git rebase --interactive $GITREVISION`
+Noninteractive rebases are executed by running `git rebase $GITREVISION`
 
 ## How do I Git Rebase?
 
@@ -42,7 +59,7 @@ Here's a table of a few valid gitrevision syntaxes you can use in a rebase, and 
 |`HEAD@{5}`|rebase all commits contained in my last 5 git actions|
 |`HEAD~5`|rebase the last 5 commits|
 |`HEAD@{5hr}`|rebase all commits made in the last 5 hours|
-|`':/^Initial'`|rebase all commits made between HEAD and the first commit found with a commit message that matches the regular expression `^Initial`|
+|`':/^Foo'`|rebase all commits made between HEAD and the first commit found with a commit message that matches the regular expression `^Foo`|
 
 ![an example of the output from git log --oneline](git-log-output.png)
 
@@ -93,6 +110,35 @@ Edit steps are a bit more complex. Git has no idea what modifications you intend
 
 ## Deleting Commits
 
+- determine what commits you want to delete by running `git log --oneline` and find the hash of the commit you intend to delete
+```fish
+486f3bf (HEAD -> main) e18155c658
+28cabde 0523d2af6c
+58098cf 5a0be3f060
+add66be 8759405589 # let's delete this commit
+76d462d f6ecfd8500
+beeef8f (origin/main, origin/HEAD) Initial commit
+```
+- go one past that commit and copy its hash
+- run `git rebase --interactive 76d462d`
+- modify the `git-rebase-todo` to delete the commit
+```fish
+drop add66be 8759405589 # I've change the action on this commit to drop
+pick 58098cf 5a0be3f060
+pick 28cabde 0523d2af6c
+pick 486f3bf e18155c658
+```
+- save and close the `git-rebase-todo`
+
+If everything worked, the commit should be gone. You can run `git log --oneline` to validate its deletion.
+```fish
+6144ecd (HEAD -> main) e18155c658
+28971d0 0523d2af6c
+ee09104 5a0be3f060
+# yay the commit that was here is gone!
+76d462d f6ecfd8500
+beeef8f (origin/main, origin/HEAD) Initial commit
+```
 ## Editing Commit Content
 
 ## Combining Commits by Squashing
