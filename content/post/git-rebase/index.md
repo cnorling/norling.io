@@ -13,6 +13,7 @@ Have you or a loved one ever wanted to:
 
 - delete a commit
 - edit the content of a commit
+- remove a specific file that was accidentally added to a commit
 - include missed files in a commit
 - fix a typo in an old commit message
 - combine a bunch of commits together
@@ -129,19 +130,55 @@ pick 28cabde 0523d2af6c
 pick 486f3bf e18155c658
 ```
 - save and close the `git-rebase-todo`
+- run `git push --force-with-lease` if working with remote changes to overwrite history
 
 If everything worked, the commit should be gone. You can run `git log --oneline` to validate its deletion.
 ```fish
 6144ecd (HEAD -> main) e18155c658
 28971d0 0523d2af6c
 ee09104 5a0be3f060
-# yay the commit that was here is gone!
+# yay the commit is gone!
 76d462d f6ecfd8500
 beeef8f (origin/main, origin/HEAD) Initial commit
 ```
 ## Editing Commit Content
 
+- determine what commit you want to edit by running `git log --oneline` and find the hash of the commit you intend to modify
+```fish
+2f512ca (HEAD -> main) b8e34da2fb
+1daec94 53a8322ae0
+49338d3 1890202347 # let's edit this commit
+6dd4f4e 3fc41f2708
+10b8051 79d8d9fc4b
+beeef8f Initial commit
+```
+- go one past that commit and copy its hash
+- run `git rebase --interactive 6dd4f4e` 
+- modify the `git-rebase-todo` to include your request to edit the commit
+```fish
+edit 49338d3 1890202347 # I've changed the action on this commit to edit
+pick 1daec94 53a8322ae0
+pick 2f512ca b8e34da2fb
+```
+- save and close the `git-rebase-todo`
+- git will pause on the commit you want to edit
+- make your changes and run `git commit --amend` to include the edits
+- run `git rebase --continue` to tell git you're done making your changes
+- run `git push --force-with-lease` if working with remote changes to overwrite history
+```fish
+2093981 (HEAD -> main) b8e34da2fb
+d3ecdd3 53a8322ae0
+12d9704 1890202347 # this commit has a new SHA meaning the changes went through!
+6dd4f4e 3fc41f2708
+10b8051 79d8d9fc4b
+beeef8f Initial commit
+```
+
+If everything worked, the commit should be edited with a new SHA. You can run `git log --oneline` to validate its modification.
+
 ## Combining Commits by Squashing
+
+
 
 ## Changing the Base of Your Branch
 
