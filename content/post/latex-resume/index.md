@@ -49,7 +49,7 @@ I use a package called `mdframed` that uses TikZ to outline text boxes around wo
 
 ### You need to import packages to do pretty much anything
 
-TeXLive has a large number of default document classes and packages that are immediatelly available at your disposal, and you'll have to use a lot of them. Set a page's margins? use Geometry. Merge cells in a table? Use `multirow` or `multicol`. Color something? Use `xolor`. Want to add a hyperlink? Use `hyperref`.
+TeXLive has a large number of default document classes and packages that are immediately available at your disposal, and you'll have to use a lot of them. Set a page's margins? Use `Geometry`. Merge cells in a table? Use `multirow` or `multicol`. Color something? Use `xolor`. Want to add a hyperlink? Use `hyperref`.
 
 Package discovery largely entails scrawling through StackOverflow for threads where people talk about how to do things.
 
