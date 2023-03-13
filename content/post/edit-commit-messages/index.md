@@ -95,7 +95,7 @@ pick ff783de buz
 #
 ```
 
-After you've made your changes, save the file and close it. Git will then prompt you to edit the commit message. 
+After you've made your changes, save the file and close it. Git will then prompt you to edit the commit message.
 
 ```fish
 baz # change this line to anything but baz
@@ -117,6 +117,6 @@ baz # change this line to anything but baz
 #
 ```
 
-Once you've made your commit message changes, save the file and close it. Git will finalize the rebase, and you can run `git log --oneline` to inspect the changes. To push your chnages to the remote git repository, you'll have to run `git push --force-with-lease` here as well
+Once you've made your commit message changes, save the file and close it. Git will finalize the rebase, and you can run `git log --oneline` to inspect the changes. To push your changes to the remote git repository, you'll have to run `git push --force-with-lease` here as well
 
 ![the final message edited](edited.png)
