@@ -1,10 +1,10 @@
 ---
 title: "Easily Resolving Merge Conflicts"
 description:
-date: 2023-03-02T10:00:00-06:00
+date: 2023-03-13T10:00:00-06:00
 slug: "merge-conflicts"
 image: pexels-delcho-dichev-517884.jpg
-draft: true
+draft: false
 tags:
   - git
 ---
@@ -30,5 +30,20 @@ or
 If you want to try it for yourself, run this shell script!
 
 ```fish
+git branch a
+git branch b
 
+git checkout a
+echo "a" > foo
+git add foo
+git commit -m "added a to foo"
+
+git checkout b
+echo "b" > foo
+git add foo
+git commit -m "added b to foo"
+
+git merge a -X theirs
 ```
+
+After running this script, `foo` in branch `b` will be overwritten with the changes from branch `a`. You can safely delete both branches `a` and `b` without reprecussions (unless for some reason you have a branch that already exists named a or b).
