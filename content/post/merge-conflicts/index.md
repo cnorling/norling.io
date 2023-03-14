@@ -1,5 +1,5 @@
 ---
-title: "Easily Resolving Merge Conflicts"
+title: "Easily Resolving Git Merge Conflicts"
 description:
 date: 2023-03-13T10:00:00-06:00
 slug: "merge-conflicts"
