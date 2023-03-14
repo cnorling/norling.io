@@ -3,7 +3,7 @@ title: "Easily Resolving Git Merge Conflicts"
 description:
 date: 2023-03-13T10:00:00-06:00
 slug: "merge-conflicts"
-image: pexels-delcho-dichev-517884.jpg
+image: pexels-pixabay-41951.jpg
 draft: false
 tags:
   - git
