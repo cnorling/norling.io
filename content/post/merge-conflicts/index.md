@@ -26,3 +26,9 @@ or
 > If there are conflicts, prefer their changes over mine
 
 ## In Practice
+
+If you want to try it for yourself, run this shell script!
+
+```fish
+
+```
