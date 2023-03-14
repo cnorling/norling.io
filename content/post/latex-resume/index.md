@@ -7,6 +7,7 @@ image: orion-nebula-gb8faf4a6f_1920.jpg
 draft: true
 tags:
   - latex
+  - jobsearch
 ---
 
 Writing LaTeX sucks, but the results are undeniably better than anything else. This article is a brief introduction into LaTeX, the basic prerequisites to writing documents, what the ecosystem is like, and how you can write your resume in LaTex.
