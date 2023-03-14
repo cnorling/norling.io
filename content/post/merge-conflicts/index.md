@@ -19,11 +19,7 @@ Merge conflicts in git are a necessary evil _because_ of the nature of git. Git 
 
 Any command that involves a merge conflict is also going to include the optional parameter for specifying a merge strategy. `-X ours` and `-X theirs` are two neat ways to say
 
-> If there are conflicts, prefer my changes over theirs
-
-or
-
-> If there are conflicts, prefer their changes over mine
+> If there are conflicts, prefer these changes over those
 
 ## In Practice
 
