@@ -102,6 +102,12 @@ Whenever a line of text is justified, LaTeX must make a determination on how muc
 
 There are many different types of documents, and all those documents have things in common regardless of who wrote the document. Classes are a collection of common parameters and characteristics in a document that should apply to all documents of that type. LaTeX ships with a few default document classes that you can use like report, book, article, or letter. Article is a good class to use if you want a blank template to work with.
 
+### Functions and Variables
+
+Functions
+
+You declare a variable the same way you declare a function; Just create a function that returns the value you want assigned to the variable. You can then use that function wherever you want to
+
 ### Drawing Things
 
 There are a million ways to do what you probably want, and 50% of those ways will probably involve using TikZ
@@ -109,13 +115,5 @@ There are a million ways to do what you probably want, and 50% of those ways wil
 TikZ allows you to draw pictures in LaTeX. The way you draw pictures might be appealing to mathemeticians, but it's not a very enjoyable experience otherwise. There are a lot of packages that utilize TikZ to draw things for you in a more easy to write format.
 
 I use a package called `mdframed` that uses TikZ to outline text boxes around words and color them.
-
-## Weird Things Specific To LaTeX
-
-- There's no good way to declare variables
-
-- Function and environment declarations cannot have numbers in their name
-
-- Conditional logic operations are difficult to do
 
 ## Writing the Resume
