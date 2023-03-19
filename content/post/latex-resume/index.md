@@ -186,9 +186,9 @@ The document is already looking much better! The next thing I want to do is incr
 }
 ```
 
-![the heading without any cells merged](03_weird-spacing.png)
+![heading without any cells merged](03_weird-spacing.png)
 
-My name looks bigger, but now the table's content is weirdly aligned. To fix this, I merge the empty cell below my name with the `multirow` package
+My name looks bigger, but now the table's content is weirdly aligned. To fix this, I merge the empty cell below my name with the `multirow` package. It's at this point that I give up keeping rough cell alignment since the cast name is so long.
 
 ```latex
 \newcommand{\heading}{
@@ -199,6 +199,23 @@ My name looks bigger, but now the table's content is weirdly aligned. To fix thi
 }
 ```
 
-![the heading with the two cells merge](03_better-spacing.png)
+![heading with the two cells merged](03_better-spacing.png)
 
-Okay my name is aligned now, but that line to print my name is now absurdly long and makes the table illegible from a code standpoint. I'm going to obfuscate how my name's casted with another command
+Okay my name is vertically aligned now, but that line to print my name is now absurdly long and makes the table illegible from a code standpoint. I'm going to obfuscate how my name's casted with another command.
+
+```latex
+\newcommand{\heading}{
+  \begin{tabular}{p{200pt} p{120pt} >{\RaggedLeft}p{120pt}}
+    \multirow{2}{200pt}{\printName} & \github & \website \\
+    & \email & \phone
+  \end{tabular}
+}
+
+\newcommand{\printName}{
+    \MakeUppercase{\huge\name}
+}
+```
+
+That's a little better, but look at the progress! I've got a ways to go though.
+
+![](03_heading.png)
