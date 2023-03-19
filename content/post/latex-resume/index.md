@@ -7,7 +7,7 @@ image: orion-nebula-gb8faf4a6f_1920.jpg
 draft: true
 tags:
   - latex
-  - jobsearch
+  - job search
 ---
 
 Writing LaTeX sucks, but the results are undeniably better than anything else. This article is a brief introduction into LaTeX, the basic prerequisites to writing documents, what the ecosystem is like, and how you can write your resume in LaTex.
@@ -117,3 +117,88 @@ TikZ allows you to draw pictures in LaTeX. The way you draw pictures might be ap
 I use a package called `mdframed` that uses TikZ to outline text boxes around words and color them.
 
 ## Writing the Resume
+
+It can be very helpful to observe a project from its creation to completion, so I've added an example branch with a series of tagged commits you can inspect to compare. A picture of the PDF output is included in the `README.md` of the repository so this blogpost doesn't get too long.
+
+### File Setup
+
+I start by defining a custom document class named `resume.cls` and a `resume.tex`. I put shared functions and formatting related things in `resume.cls`. The content of the resume itself goes in `resume.tex`. I add some content to `resume.cls` to declare its parent document class, and link `resume.tex` to that class. I also add a special environment named document to `resume.tex` and put my name in it.
+
+![](01_file-setup.png)
+
+### Content
+
+When working with a document that requires a lot of formatting, it can be helpful to have all your content already on the page so you can observe the text will behave as you make changes. For this example, there's a mix of real text and fake text. I'll use the lipsum package and add it to `resume.cls`. After it's imported, I can use the `\lipsum` directive to get some example content.
+
+Some of the content needs to be handled differently from the others though. I'll declare a list environment for the qualifications and skills, then add some placeholder items to it.
+
+![](02_content.png)
+
+### Heading
+
+The first formatting thing I want to tackle is the page margins. I like my resume to have short vertical margins and wider horizontal margins. I can use the geometry package to setup page margins like so
+
+```latex
+\usepackage{geometry}
+\geometry{
+    a4paper,
+    left=20mm,
+    right=20mm,
+    top=8mm,
+    bottom=8mm,
+}
+```
+
+The second formatting thing I want to tackle is the heading. Before I can do that, I need to add some variables so that I can use their content in `resume.cls`. After adding them with `\newcommand{\functionName}{string}` I can then call `\functionName` to access their output.
+
+My heading isn't something that's really going to change, so the strategy I use for my heading is a function that takes no parameters that pulls from the variables we just declared. I define a heading command and add the content we have in our header like so
+
+```latex
+\newcommand{\heading}{
+  \name
+  \github
+  \website
+  \email
+  \phone
+  \address
+}
+```
+
+I want things roughly aligned with where they need to go, and I can do that with an environment called a tabular. Table declarations in LaTeX are very finnicky. They look best as code when their content is kept simple and straightforward. We pass a few parameters to indicate how many cells we want, how wide those cells should be, and how they should align. We'll also want to use the package `tabularx` since it fixes some issues that native LaTeX tabulars have. Here's an example
+
+```latex
+\begin{tabular}{p{200pt} p{120pt} p{120pt}}
+  % define the table content and separate cells with &
+  % newlines in tables are declared with \\ at the end
+  \name & \github & \website \\
+        & \email & \phone
+\end{tabular}
+```
+
+The document is already looking much better! The next thing I want to do is increase the size of my name and capitalize it as well as the sections. For that, we can use `\MakeUppercase{}` and `\huge`. I also want the things on the right side of the heading to align to the right side of the page; We can do that by applying the `>{\raggedright\arraybackslash}` directive to the columns in question.
+
+```latex
+\newcommand{\heading}{
+  \begin{tabular}{p{200pt} p{120pt} >{\RaggedLeft}p{120pt}}
+    \MakeUppercase{\huge\name} & \github & \website \\
+                               & \email  & \phone
+  \end{tabular}
+}
+```
+
+![the heading without any cells merged](03_weird-spacing.png)
+
+My name looks bigger, but now the table's content is weirdly aligned. To fix this, I merge the empty cell below my name with the `multirow` package
+
+```latex
+\newcommand{\heading}{
+  \begin{tabular}{p{200pt} p{120pt} >{\RaggedLeft}p{120pt}}
+    \multirow{2}{200pt}{\MakeUppercase{\huge\name}} & \github & \website \\
+    & \email & \phone
+  \end{tabular}
+}
+```
+
+![the heading with the two cells merge](03_better-spacing.png)
+
+Okay my name is aligned now, but that line to print my name is now absurdly long and makes the table illegible from a code standpoint. I'm going to obfuscate how my name's casted with another command
