@@ -24,7 +24,7 @@ I am very picky about resume formatting. If things aren't perfectly aligned, it 
 
 ![My old resume with the table cell outline set to 1pt and 0pt width](old-resume.png)
 
-I felt really good about the results, but over time as I would make modifications the pain points started to wear on me. I spoke to a coworker about his resume, and he said he wrote his in LaTeX. I didn't know much about LaTeX; I knew it was frequently used for academic papers and was developed as an easier way to express mathematical equations.
+I felt really good about the results, but over time as I would make modifications the pain points started to wear on me. I asked my friend [Dakota Clark](https://github.com/Persistent13) about his resume, and he said he wrote his in LaTeX. I didn't know much about LaTeX at the time. I knew it was frequently used for academic papers and was developed as an easier way to express mathematical equations.
 
 My interest was piqued, and I decided to give it a shot. He gave me a copy of his resume, and I scanned over it to try and learn LaTeX. I also looked on Overleaf for public LaTeX resumes, but I didn't see anything that really looked like what I wanted. I ended up writing my own from scratch!
 
@@ -125,7 +125,7 @@ I start by defining a document and a document class. `resume.cls` is the class a
 
 ### Content
 
-When working with a document that requires a lot of formatting, it can be helpful to have all your content already on the page so you can observe the text will behave as you make changes. For this example, there's a mix of real text and fake text. I'll use the lipsum package and add it to `resume.cls`. After it's imported, I can use the `\lipsum` directive to get some example content.
+When working with a document that requires a lot of formatting, it can be helpful to have all your content already on the page so you can observe how the text will behave as you make changes. For this example, there's a mix of real text and fake text. I'll use the lipsum package and add it to `resume.cls`. After it's imported, I can use the `\lipsum` function to get some example content.
 
 Some of the content needs to be handled differently from the others though. I'll declare a list environment for the qualifications and skills, then add some placeholder items to it.
 
@@ -172,7 +172,7 @@ I want things roughly aligned with where they need to go, and I can do that with
 \end{tabular}
 ```
 
-The document is already looking much better! The next thing I want to do is increase the size of my name and capitalize it as well as the sections. For that, we can use `\MakeUppercase{}` and `\huge`. I also want the things on the right side of the heading to align to the right side of the page; We can do that by applying the `>{\raggedright\arraybackslash}` directive to the columns in question.
+The document is already looking much better! The next thing I want to do is increase the size of my name and capitalize it as well as the sections. For that, we can use `\MakeUppercase{}` and `\huge`. I also want the things on the right side of the heading to align to the right side of the page; We can do that by applying the `>{\raggedright\arraybackslash}` directive to the column in question.
 
 ```latex
 \newcommand{\heading}{
@@ -185,7 +185,7 @@ The document is already looking much better! The next thing I want to do is incr
 
 ![Heading without any cells merged](03_weird-spacing.png)
 
-My name looks bigger, but now the table's content is weirdly aligned. To fix this, I merge the empty cell below my name with the `multirow` package. It's at this point that I give up keeping rough cell alignment since the cast name is so long.
+My name looks bigger, but now the table's content isn't aligned. To fix this, I merge the empty cell below my name with the `multirow` package. It's at this point that I give up keeping rough cell alignment since the cast name is so long.
 
 ```latex
 \newcommand{\heading}{
@@ -213,7 +213,7 @@ Okay my name is vertically aligned now, but that line to print my name is absurd
 }
 ```
 
-That's a little better, but look at the progress!
+Definitely better than before, but there's room for improvement.
 
 ![](03_heading.png)
 
@@ -276,7 +276,7 @@ I'd like the skills and tools to be spread out across the page. A package called
   \end{multicols}
 ```
 
-Some of the formatting has leaked into the `resume.tex` file now with how things are setup. To fix this, I'll create a custom environment that declares the list as well as a few other options. The skills environment will have one parameter that we declare with `\newenvironment{envname}[3]{}{}` where the integer is how many arguments we want the function to have. Values from those parameters are used by referencing their integer in the position prefixed by a pound like this: `#1`
+Some of the formatting has leaked into the `resume.tex` file with how things are setup now. To fix this, I'll create a custom environment that declares the list as well as a few other options. The skills environment will have one parameter that we declare with `\newenvironment{envname}[3]{}{}` where the integer is how many arguments we want the function to have. Values from those parameters are used by referencing their integer in the position prefixed by a pound like this: `#1`
 
 When you use the environment, you add a set of curly brackets after the environment's name with your input like this: `\begin{envname}{foo}{bar}{baz}`. Our use-case is much simpler though since we only have one parameter.
 
@@ -314,7 +314,7 @@ When you use the environment, you add a set of curly brackets after the environm
 
 #### Vertical Padding
 
-At this point, the spacing between the list we have for qualifications vs skills and tools is different, so I'll have to tweak the qualifications environment a bit with some padding to even things out `\vspace*{8pt}`.
+At this point, the spacing between the list we have for qualifications vs skills and tools is different, so I'll have to tweak the qualifications environment a bit with some padding to even things out. I can do this with the `\vspace*{8pt}` command.
 
 What's that asterisk mean? Well, to be honest a lot of the default behaviors of LaTeX are inconsistent and sometimes undesirable. Rather than update the package, newer packages by maintainers are added to TeXlive to fix these issues. But now there are package naming conflicts. The solution is to change the case sensitivity of the package or suffix an asterisk at the end. `\vspace` and `\vspace*` are both different packages with different behaviors. If you see a package with an asterisk, you should use that over the default package because it's more likely up-to-date.
 
@@ -350,7 +350,7 @@ I'd like to also organize the job content similar to how the header is handled. 
 
 ### Styling
 
-Now I want to add some style to the page to make it less boring.
+Now I want to add some style to the page to make it less plain.
 
 #### Favicons and Hyperlinks
 
