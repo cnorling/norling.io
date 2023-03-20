@@ -354,4 +354,125 @@ I'd like to also organize the job content similar to how the header is handled. 
 
 ### Styling
 
-Now I want to add some style to the page to make it
+Now I want to add some style to the page to make it less boring.
+
+#### Favicons and Hyperlinks
+
+With the favicon package I imported earlier, I can add some cool looking little icons to the header. I'll need to expand the table width and add a few more helper functions and packages to setup hyperlinks and size the icons; The `hyperref` package lets me setup hyperlinks. I'll also configure a color variable to use globally and use that later on.
+
+```latex
+\newcommand{\heading}{
+  \begin{tabular}{ p{200pt} >{\raggedleft\arraybackslash}p{30pt} p{90pt}>{\raggedleft\arraybackslash} p{90pt} >{\raggedright\arraybackslash} p{30pt} }
+    \multirow{2}{200pt}{\printName} & \icogithub & \github & \website & \icowebsite \\
+    & \icophone & \phone & \email & \icomail
+  \end{tabular}
+}
+
+\newcommand{\printName}{\MakeUppercase{\huge \name}}
+\newcommand{\ico}[2]{{\large\href{#1}{#2}}}
+\newcommand{\icogithub}{\ico{https://github.com/\github}{\faGithub}}
+\newcommand{\icomail}{\ico{mailto:\email}{\faEnvelope}}
+\newcommand{\icophone}{\ico{tel:\phone}{\faPhone}}
+\newcommand{\icowebsite}{\ico{https://\website}{\faGlobe}}
+\newcommand{\setcolor}{\color{\colour}}
+```
+
+#### Text Boxes
+
+I searched around and found a package called `mdframed` that lets me draw boxes around text. It works by allowing you to declare a type of environment that's specific to the `mdframed` package. I declare a positive and negative variant for some variety on the page like so
+
+```latex
+\newmdenv[
+  middlelinewidth=0pt,
+  backgroundcolor=\colour,
+  roundcorner=2pt,
+  fontcolor=White,
+  innerleftmargin=5pt,
+  innertopmargin=-8pt,
+  userdefinedwidth=150pt
+]{infobox}
+
+\newmdenv[
+  userdefinedwidth=\textwidth,
+  linecolor=\colour,
+  linewidth=1pt,
+  backgroundcolor=White,
+  roundcorner=2pt,
+  fontcolor=\colour,
+  innerleftmargin=5pt,
+  innerbottommargin=2pt
+]{infoboxinvert}
+```
+
+I use the infobox like I would any ordinary environment. For the header, I'm going to override a few settings on the infobox. I'll also tweak the name to be splayed across two lines by adjusting the multirow cell width like so
+
+```latex
+\newcommand{\heading}{
+  \begin{infobox}[
+    innertopmargin=4pt,
+    innerbottommargin=25pt,
+    innerleftmargin=0pt
+  ]
+    \begin{tabular}{ p{200pt} >{\raggedleft}p{30pt} p{90pt}>{\raggedleft} p{90pt} >{\raggedright\arraybackslash} p{30pt} }
+      \multirow{2}{150pt}{\printName} & \icogithub & \github & \website & \icowebsite \\
+      & \icophone & \phone & \email & \icomail
+    \end{tabular}
+  \end{infobox}
+}
+```
+
+Now I'll wrap the job environment in the inverted infobox
+
+```latex
+\newenvironment{job}[3]{
+  \vspace{5pt}
+  \begin{infoboxinvert}[]
+    \begin{tabularx}{1\textwidth} {
+      @{}>{\hsize=1\hsize\linewidth=\hsize\raggedright\arraybackslash}X@{}
+      @{}>{\hsize=1\hsize\linewidth=\hsize\raggedleft\arraybackslash}X@{}
+    }
+      \textbf{\large #1} & \MakeUppercase{\textbf{#3}} \\
+      \textit{#2}
+    \end{tabularx}
+  \end{infoboxinvert}
+}{}
+```
+
+For the sections, I'll declare a function that uses the infobox environment and accepts a parameter for the section name. I'll configure the width of the boxes to be static so they all align down the page.
+
+```latex
+\newcommand{\sector}[1]{
+  \begin{infobox}[userdefinedwidth=143pt]
+    \section*{\MakeUppercase{#1}}
+  \end{infobox}
+}
+```
+
+I'll set the color of the checkboxes as well with the `\setcolor` command I defined earlier
+
+```latex
+\newenvironment{skills}[1]{
+  \vspace*{-5pt}
+  \begin{multicols}{#1}
+    \begin{list}{\setcolor\faCheckSquare}{
+      \setlength{\leftmargin}{15pt}
+      \setlength{\itemsep}{0pt}
+      \itemsep -0.5em \vspace{-0.5em}
+      \raggedright
+    }
+}{
+    \end{list}
+  \end{multicols}
+  \vspace*{-5pt}
+}
+```
+
+I'll also update some of the placeholder content to be more like an actual resume.
+
+![The final resume](05_styling.png)
+
+## Ending Notes
+
+LaTeX is a very old language with a lot of inconsistencies, weird syntax, and small issues that can make it a frustrating language to work with. That being said, I love the results and will definitely be using it going forward. If you'd like to see this resume on github, check it out [here](https://github.com/cnorling/resume-public)!
+
+Thanks for reading!
