@@ -6,15 +6,15 @@ slug: "latex-resume"
 image: orion-nebula-gb8faf4a6f_1920.jpg
 draft: false
 tags:
-  - latex
+  - LaTeX
   - job search
 ---
 
-Writing LaTeX sucks, but the results are undeniably better than anything else. This article is a brief introduction into LaTeX, the basic prerequisites to writing documents, what the ecosystem is like, and what it was like writing my resume in LaTex.
+Writing LaTeX sucks, but the results are undeniably better than anything else. This article is a brief introduction into LaTeX, the basic prerequisites to writing documents, what the ecosystem is like, and what it was like writing my resume in LaTeX.
 
 ## Dark Times Before LaTeX
 
-I am very picky about resume formatting. If things aren't perfectly aligned, it bothers me on a spiritual level. Before LaTeX, my solution for writing my resume was to make a table in google docs, organize the content into columns, and set the table line width to 0 so it would be transparent. This setup worked for quite some time, but it had drawbacks.
+I am very picky about resume formatting. If things aren't perfectly aligned, it bothers me on a spiritual level. Before LaTeX, my solution for writing my resume was to make a table in Google Docs, organize the content into columns, and set the table line width to 0 so it would be transparent. This setup worked for quite some time, but it had drawbacks.
 
 - changing the column width for one cell had implications for other cells
 - the witdth of each cell was independent from other similar cells. This led to inconsistent spacing on the headers and sections
@@ -22,7 +22,7 @@ I am very picky about resume formatting. If things aren't perfectly aligned, it 
 - a lot of cells had to be merged together
 - content had to be manually shuffled around for appropriate page balancing
 
-![my old resume with the table cell outline set to 1pt and 0pt width](old-resume.png)
+![My old resume with the table cell outline set to 1pt and 0pt width](old-resume.png)
 
 I felt really good about the results, but over time as I would make modifications the pain points started to wear on me. I spoke to a coworker about his resume, and he said he wrote his in LaTeX. I didn't know much about LaTeX; I knew it was frequently used for academic papers and was developed as an easier way to express mathematical equations.
 
@@ -32,7 +32,7 @@ My interest was piqued, and I decided to give it a shot. He gave me a copy of hi
 
 ### Environments
 
-When you declare things like font, size, color, and other text modifiers, You're applying it to an environment. Think of an environment as something like a title, paragraph, footer, or table. A subsection of things that needs to be handled in a certain way. You can create your own environments, or you can use pre-made ones included in libraries. You can use a pre-made an environment like so:
+When you declare things like font, size, color, and other text modifiers, you're applying it to an environment. Think of an environment as something like a title, paragraph, footer, or table; A subsection of things that needs to be handled in a certain way. You can create your own environments, or you can use pre-made ones included in libraries. You can use a pre-made an environment like so
 
 ```latex
 \begin{environmentName}
@@ -66,9 +66,9 @@ You can also have environments within environments
 
 ### Packages
 
-TeXLive has a large number of default document classes and packages that are immediately available at your disposal, and you'll have to use a lot of them. Set a page's margins? Use `Geometry`. Merge cells in a table? Use `multirow` or `multicol`. Color something? Use `xolor`. Want to add a hyperlink? Use `hyperref`.
+TeXLive has a large number of default document classes and packages that are immediately available at your disposal, and you'll have to use a lot of them. Set a page's margins? Use `geometry`. Merge cells in a table? Use `multirow` or `multicol`. Color something? Use `xcolor`. Want to add a hyperlink? Use `hyperref`.
 
-Package discovery largely entails scrawling through StackOverflow or Overleaf for threads where people talk about how to do things. Overall, the ecosystem is well documented with most LaTeX libraries choosing to document their programs in PDFs on CTAN. You can find an example of the Geometry package [here](https://ctan.org).
+Package discovery largely entails scrawling through StackOverflow or Overleaf for threads where people talk about how to do things. Overall, the ecosystem is well documented with most LaTeX libraries choosing to document their programs in PDFs on CTAN. You can find an example of the geometry package [here](https://ctan.org/pkg/geometry).
 
 You can import a package like so
 
@@ -78,7 +78,7 @@ You can import a package like so
 
 ### Text Sizing
 
-Because of how LaTeX handles text, you are limited to a small range of predetermined sizes that should meet most people's needs. If you want to go larger or smaller, you'll need to find a package with different supported sizes. Overleaf has some excellent docuemntation on font sizing you can read [here](https://www.overleaf.com/learn/latex/Font_sizes%2C_families%2C_and_styles)
+Because of how LaTeX handles text, you are limited to a small range of predetermined sizes that should meet most people's needs. If you want to go larger or smaller, you'll need to find a package with different supported sizes. Overleaf has some excellent docuemntation on font sizing you can read [here](https://www.overleaf.com/learn/latex/Font_sizes%2C_families%2C_and_styles).
 
 ### Fonts
 
@@ -100,30 +100,26 @@ Whenever a line of text is justified, LaTeX must make a determination on how muc
 
 ### Document Classes
 
-There are many different types of documents, and all those documents have things in common regardless of who wrote the document. Classes are a collection of common parameters and characteristics in a document that should apply to all documents of that type. LaTeX ships with a few default document classes that you can use like report, book, article, or letter. Article is a good class to use if you want a blank template to work with.
+There are many different types of documents, and all those documents have things in common regardless of who wrote the document. Classes are a collection of common parameters and characteristics in a document that should apply to all documents of that type. TeXLive includes a few document classes that you can use like report, book, article, or letter. Article is a good class to use if you want a blank template to work with.
 
 ### Functions and Variables
 
-Functions
-
-You declare a variable the same way you declare a function; Just create a function that returns the value you want assigned to the variable. You can then use that function wherever you want to
+You declare a variable the same way you declare a function; Just create a function that returns the value you want assigned to the variable. You can then use that function wherever you want to.
 
 ### Drawing Things
 
-There are a million ways to do what you probably want, and 50% of those ways will probably involve using TikZ
-
-TikZ allows you to draw pictures in LaTeX. The way you draw pictures might be appealing to mathemeticians, but it's not a very enjoyable experience otherwise. There are a lot of packages that utilize TikZ to draw things for you in a more easy to write format.
+There are a million ways to do what you probably want, and 50% of those ways will probably involve using TikZ. TikZ allows you to draw pictures in LaTeX. The way you draw pictures might be appealing to mathemeticians, but it's not a very enjoyable experience otherwise. There are a lot of packages that utilize TikZ to draw things for you in a more easy to write format.
 
 I use a package called `mdframed` that uses TikZ to outline text boxes around words and color them.
 
 ## Writing the Resume
 
-It can be very helpful to observe a project from its creation to completion, so I've added a step by step example folder you can inspect to compare. A picture of the PDF output is included in the `README.md` of the repository so this blogpost doesn't get too long. You can find it here:
+It can be very helpful to observe a project from creation to completion, so I've added a step by step example on github you can inspect to compare. A picture of the PDF output is included in the `README.md` of the repository so this blogpost doesn't get too long. You can find it here:
 https://github.com/cnorling/resume-public/tree/main/example
 
 ### File Setup
 
-I start by defining a custom document class named `resume.cls` and a `resume.tex`. I put shared functions and formatting related things in `resume.cls`. The content of the resume itself goes in `resume.tex`. I add some content to `resume.cls` to declare its parent document class, and link `resume.tex` to that class. I also add a special environment named document to `resume.tex` and put my name in it.
+I start by defining a document and a document class. `resume.cls` is the class and `resume.tex` is the document. I put shared functions and formatting related things in `resume.cls`. The content of the resume itself goes in `resume.tex`. I add some content to `resume.cls` to declare its parent document class, and link `resume.tex` to that class. I also add a special environment named document to `resume.tex` and put my name in it.
 
 ![](01_file-setup.png)
 
@@ -187,7 +183,7 @@ The document is already looking much better! The next thing I want to do is incr
 }
 ```
 
-![heading without any cells merged](03_weird-spacing.png)
+![Heading without any cells merged](03_weird-spacing.png)
 
 My name looks bigger, but now the table's content is weirdly aligned. To fix this, I merge the empty cell below my name with the `multirow` package. It's at this point that I give up keeping rough cell alignment since the cast name is so long.
 
@@ -200,9 +196,9 @@ My name looks bigger, but now the table's content is weirdly aligned. To fix thi
 }
 ```
 
-![heading with the two cells merged](03_better-spacing.png)
+![Heading with the two cells merged](03_better-spacing.png)
 
-Okay my name is vertically aligned now, but that line to print my name is now absurdly long and makes the table illegible from a code standpoint. I'm going to obfuscate how my name's casted with another command.
+Okay my name is vertically aligned now, but that line to print my name is absurdly long and makes the table illegible from a code standpoint. I'm going to obfuscate how my name's casted with another command.
 
 ```latex
 \newcommand{\heading}{
@@ -217,7 +213,7 @@ Okay my name is vertically aligned now, but that line to print my name is now ab
 }
 ```
 
-That's a little better, but look at the progress! I've got a ways to go though.
+That's a little better, but look at the progress!
 
 ![](03_heading.png)
 
@@ -319,9 +315,9 @@ When you use the environment, you add a set of curly brackets after the environm
 
 #### Vertical Padding
 
-At this point, the spacing between the list we have for qualifications vs skills and tools is different, so we'll have to tweak the qualifications environment a bit with some padding to even things out `\vspace*{8pt}`
+At this point, the spacing between the list we have for qualifications vs skills and tools is different, so I'll have to tweak the qualifications environment a bit with some padding to even things out `\vspace*{8pt}`.
 
-What's that asterisk mean? Well, to be honest a lot of the default behaviors of LaTeX are inconsistent and sometimes undesirable. Rather than update the package, newer packages by maintainers are added to TeXlive to fix these issues. But now there are package naming conflicts, so the solution there is to change the case sensitivity of the package or suffix an asterisk at the end. `\vspace` and `\vspace*` are both different packages with different behaviors. If you see a library with an asterisk, you should probably use that over the default library.
+What's that asterisk mean? Well, to be honest a lot of the default behaviors of LaTeX are inconsistent and sometimes undesirable. Rather than update the package, newer packages by maintainers are added to TeXlive to fix these issues. But now there are package naming conflicts. The solution is to change the case sensitivity of the package or suffix an asterisk at the end. `\vspace` and `\vspace*` are both different packages with different behaviors. If you see a package with an asterisk, you should use that over the default package because it's more likely up-to-date.
 
 #### Font
 
@@ -359,7 +355,7 @@ Now I want to add some style to the page to make it less boring.
 
 #### Favicons and Hyperlinks
 
-With the favicon package I imported earlier, I can add some cool looking little icons to the header. I'll need to expand the table width and add a few more helper functions and packages to setup hyperlinks and size the icons; The `hyperref` package lets me setup hyperlinks. I'll also configure a color variable to use globally and use that later on.
+With the favicon package I imported earlier, I can add some cool icons to the header. I'll need to expand the table width and add a few more helper functions and packages to setup hyperlinks and size the icons; The `hyperref` package lets me setup hyperlinks. I'll also configure a color variable globally and use that later on.
 
 ```latex
 \newcommand{\heading}{
@@ -380,7 +376,7 @@ With the favicon package I imported earlier, I can add some cool looking little 
 
 #### Text Boxes
 
-I searched around and found a package called `mdframed` that lets me draw boxes around text. It works by allowing you to declare a type of environment that's specific to the `mdframed` package. I declare a positive and negative variant for some variety on the page like so
+I found a package called `mdframed` that lets me draw boxes around text. It works by allowing you to declare a type of environment that's specific to the `mdframed` package. I declare a positive and negative variant for some variety on the page like so
 
 ```latex
 \newmdenv[
@@ -422,7 +418,7 @@ I use the infobox like I would any ordinary environment. For the header, I'm goi
 }
 ```
 
-Now I'll wrap the job environment in the inverted infobox
+Now I'll wrap the job environment in the inverted infobox.
 
 ```latex
 \newenvironment{job}[3]{
@@ -449,7 +445,7 @@ For the sections, I'll declare a function that uses the infobox environment and 
 }
 ```
 
-I'll set the color of the checkboxes as well with the `\setcolor` command I defined earlier
+I'll set the color of the checkboxes as well with the `\setcolor` command I defined earlier.
 
 ```latex
 \newenvironment{skills}[1]{
@@ -474,6 +470,6 @@ I'll also update some of the placeholder content to be more like an actual resum
 
 ## Ending Notes
 
-LaTeX is a very old language with a lot of inconsistencies, weird syntax, and small issues that can make it a frustrating language to work with. That being said, I love the results and will definitely be using it going forward. If you'd like to see this resume on github, check it out [here](https://github.com/cnorling/resume-public)! You're more than welcome to fork it for personal use and tweak it however you like =\]
+LaTeX is a very old language with a lot of inconsistencies, weird syntax, and small issues that can make it a frustrating language to work with. That being said, I love the results and will definitely use it going forward. If you'd like to see this resume on github, check it out [here](https://github.com/cnorling/resume-public)! You're more than welcome to fork it for personal use and tweak it however you like =\]
 
 Thanks for reading!
