@@ -219,3 +219,139 @@ Okay my name is vertically aligned now, but that line to print my name is now ab
 That's a little better, but look at the progress! I've got a ways to go though.
 
 ![](03_heading.png)
+
+### Formatting
+
+#### Paragraph Indentation
+
+To fix the paragraph indentation on this resume, I use the parskip package. I don't have the capability to fix the heading indentation at this time, but it won't be a problem with the styling we'll do later.
+
+#### Hyphenated Linebreaks
+
+Some of the words are spread across multiple lines, so I'll want to configure the page's tolerance and disable hyphenation with the `hyphenat` package.
+
+#### Bullet Points
+
+I'd prefer to use a nicer icon than just an asterisk. The favicon LaTeX library has a lot of good icons to use. I like `\faCheckSquare`
+I want the bullet points to be in-line with the left side of the page, so I'll have to edit the list's parameters. I also want to change the separation between items to be tighter like so
+
+```latex
+  \begin{list}{\faCheckSquare}{
+    \setlength{\leftmargin}{15pt}
+    \setlength{\itemsep}{0pt}
+    \itemsep -0.5em \vspace{-0.5em}
+    \raggedright
+  }
+    \item foo
+    \item bar
+    \item baz
+    \item biz
+    \item boz
+    \item buz
+    \item bez
+  \end{list}
+```
+
+#### Multiple Column List
+
+I'd like the skills and tools to be spread out across the page. A package called `multicol` lets me spread a single list across multiple columns like so
+
+```latex
+  \begin{multicols}{4}
+    \begin{list}{\faCheckSquare}{
+      \setlength{\leftmargin}{15pt}
+      \setlength{\itemsep}{0pt}
+      \itemsep -0.5em \vspace{-0.5em}
+      \raggedright
+    }
+      \item foo
+      \item bar
+      \item baz
+      \item biz
+      \item boz
+      \item buz
+      \item bez
+      \item fiz
+      \item faz
+      \item fox
+      \item foz
+      \item fyz
+    \end{list}
+  \end{multicols}
+```
+
+Some of the formatting has leaked into the `resume.tex` file now with how things are setup. To fix this, I'll create a custom environment that declares the list as well as a few other options. The skills environment will have one parameter that we declare with `\newenvironment{envname}[3]{}{}` where the integer is how many arguments we want the function to have. Values from those parameters are used by referencing their integer in the position prefixed by a pound like this: `#1`
+
+When you use the environment, you add a set of curly brackets after the environment's name with your input like this: `\begin{envname}{foo}{bar}{baz}`. Our use-case is much simpler though since we only have one parameter.
+
+```latex
+% resume.cls
+\newenvironment{skills}[1]{
+  \begin{multicols}{#1}
+    \begin{list}{*}{
+      \setlength{\leftmargin}{15pt}
+      \setlength{\itemsep}{0pt}
+      \itemsep -0.5em \vspace{-0.5em}
+      \raggedright
+    }
+}{
+    \end{list}
+  \end{multicols}
+}
+
+% resume.tex
+\begin{skills}{4}
+  \item foo
+  \item bar
+  \item baz
+  \item biz
+  \item boz
+  \item buz
+  \item bez
+  \item fiz
+  \item faz
+  \item fox
+  \item foz
+  \item fyz
+\end{skills}
+```
+
+#### Vertical Padding
+
+At this point, the spacing between the list we have for qualifications vs skills and tools is different, so we'll have to tweak the qualifications environment a bit with some padding to even things out `\vspace*{8pt}`
+
+What's that asterisk mean? Well, to be honest a lot of the default behaviors of LaTeX are inconsistent and sometimes undesirable. Rather than update the package, newer packages by maintainers are added to TeXlive to fix these issues. But now there are package naming conflicts, so the solution there is to change the case sensitivity of the package or suffix an asterisk at the end. `\vspace` and `\vspace*` are both different packages with different behaviors. If you see a library with an asterisk, you should probably use that over the default library.
+
+#### Font
+
+We'll want to set the font too. I like `comfortaa`, so I'll set it globally with the `comfortaa` package.
+
+#### Text Color
+
+Black on white is very harsh on the eyes, so changing the text color will help. I can do that by configuring a default color in the class like this `\color{darkgray}`.
+
+I'd like to also organize the job content similar to how the header is handled. I'll create a new environment that takes 3 parameters with a 2x2 table. To format the text, I'll bold the job and date, italicize the title, and capitalize the date. With this table, I'll need some more advanced formatting utilities so I'll use a `tabularx` instead.
+
+```latex
+% resume.cls
+\newenvironment{job}[3]{
+  \vspace{5pt}
+  \begin{tabularx}{1\textwidth} {
+    @{}>{\hsize=1\hsize\linewidth=\hsize\raggedright\arraybackslash}X@{}
+    @{}>{\hsize=1\hsize\linewidth=\hsize\raggedleft\arraybackslash}X@{}
+  }
+    \textbf{\large #1} & \MakeUppercase{\textbf{#3}} \\
+    \textit{#2}
+  \end{tabularx}
+}{}
+
+% resume.tex
+\begin{job}{job name}{job title}{12-2021 - present}
+\end{job}
+```
+
+![Now we're cooking](04_formatting.png)
+
+### Styling
+
+Now I want to add some style to the page to make it
