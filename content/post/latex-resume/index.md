@@ -16,11 +16,11 @@ Writing LaTeX sucks, but the results are undeniably better than anything else. T
 
 I am very picky about resume formatting. If things aren't perfectly aligned, it bothers me on a spiritual level. Before LaTeX, my solution for writing my resume was to make a table in Google Docs, organize the content into columns, and set the table line width to 0 so it would be transparent. This setup worked for quite some time, but it had drawbacks.
 
-- changing the column width for one cell had implications for other cells
-- the witdth of each cell was independent from other similar cells. This led to inconsistent spacing on the headers and sections
-- content would shift between when the table was set to 1 or 0 line width
-- a lot of cells had to be merged together
-- content had to be manually shuffled around for appropriate page balancing
+- Changing the column width for one cell had implications for other cells
+- The witdth of each cell was independent from other similar cells. This led to inconsistent spacing on the headers and sections
+- Content would shift between when the table was set to 1 or 0 line width
+- A lot of cells had to be merged together
+- Content had to be manually shuffled around for appropriate page balancing
 
 ![My old resume with the table cell outline set to 1pt and 0pt width](old-resume.png)
 
@@ -221,7 +221,7 @@ That's a little better, but look at the progress!
 
 #### Paragraph Indentation
 
-To fix the paragraph indentation on this resume, I use the parskip package. I don't have the capability to fix the heading indentation at this time, but it won't be a problem with the styling we'll do later.
+To fix the paragraph indentation on this resume, I use the `parskip` package. I don't have the capability to fix the heading indentation at this time, but it won't be a problem with the styling we'll do later.
 
 #### Hyphenated Linebreaks
 
@@ -229,8 +229,7 @@ Some of the words are spread across multiple lines, so I'll want to configure th
 
 #### Bullet Points
 
-I'd prefer to use a nicer icon than just an asterisk. The favicon LaTeX library has a lot of good icons to use. I like `\faCheckSquare`
-I want the bullet points to be in-line with the left side of the page, so I'll have to edit the list's parameters. I also want to change the separation between items to be tighter like so
+I'd prefer to use a nicer icon than just an asterisk. The `favicon` LaTeX library has a lot of good icons to use. I like `\faCheckSquare`. I want the bullet points to be in-line with the left side of the page, so I'll have to edit the list's parameters. I also want to change the separation between items to be tighter like so
 
 ```latex
   \begin{list}{\faCheckSquare}{
