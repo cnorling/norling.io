@@ -10,7 +10,7 @@ tags:
   - job search
 ---
 
-Writing LaTeX sucks, but the results are undeniably better than anything else. This article is a brief introduction into LaTeX, the basic prerequisites to writing documents, what the ecosystem is like, and how you can write your resume in LaTex.
+Writing LaTeX sucks, but the results are undeniably better than anything else. This article is a brief introduction into LaTeX, the basic prerequisites to writing documents, what the ecosystem is like, and what it was like writing my resume in LaTex.
 
 ## Dark Times Before LaTeX
 
@@ -26,7 +26,7 @@ I am very picky about resume formatting. If things aren't perfectly aligned, it 
 
 I felt really good about the results, but over time as I would make modifications the pain points started to wear on me. I spoke to a coworker about his resume, and he said he wrote his in LaTeX. I didn't know much about LaTeX; I knew it was frequently used for academic papers and was developed as an easier way to express mathematical equations.
 
-My interest was piqued, and I decided to give it a shot. I looked on Overleaf for public LaTeX resumes, but I didn't see anything that really looked like what I wanted. I ended up writing my own from scratch!
+My interest was piqued, and I decided to give it a shot. He gave me a copy of his resume, and I scanned over it to try and learn LaTeX. I also looked on Overleaf for public LaTeX resumes, but I didn't see anything that really looked like what I wanted. I ended up writing my own from scratch!
 
 ## LaTeX Concepts
 
@@ -473,6 +473,6 @@ I'll also update some of the placeholder content to be more like an actual resum
 
 ## Ending Notes
 
-LaTeX is a very old language with a lot of inconsistencies, weird syntax, and small issues that can make it a frustrating language to work with. That being said, I love the results and will definitely be using it going forward. If you'd like to see this resume on github, check it out [here](https://github.com/cnorling/resume-public)!
+LaTeX is a very old language with a lot of inconsistencies, weird syntax, and small issues that can make it a frustrating language to work with. That being said, I love the results and will definitely be using it going forward. If you'd like to see this resume on github, check it out [here](https://github.com/cnorling/resume-public)! You're more than welcome to fork it for personal use and tweak it however you like =\]
 
 Thanks for reading!
