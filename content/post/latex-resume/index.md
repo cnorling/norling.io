@@ -118,7 +118,8 @@ I use a package called `mdframed` that uses TikZ to outline text boxes around wo
 
 ## Writing the Resume
 
-It can be very helpful to observe a project from its creation to completion, so I've added an example branch with a series of tagged commits you can inspect to compare. A picture of the PDF output is included in the `README.md` of the repository so this blogpost doesn't get too long.
+It can be very helpful to observe a project from its creation to completion, so I've added a step by step example folder you can inspect to compare. A picture of the PDF output is included in the `README.md` of the repository so this blogpost doesn't get too long. You can find it here:
+https://github.com/cnorling/resume-public/tree/main/example
 
 ### File Setup
 
