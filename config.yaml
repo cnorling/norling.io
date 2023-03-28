@@ -1,6 +1,6 @@
 baseurl: https://norling.io
 languageCode: en-us
-paginate: 5
+paginate: 100
 title: Cerise Norling
 author:
   name: cnorling
