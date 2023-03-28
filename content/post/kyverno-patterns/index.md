@@ -7,6 +7,8 @@ slug: kyverno-patterns
 draft: false
 tags:
   - kubernetes
+  - kyverno
+  - infosec
 ---
 
 Kyverno is an admission controller used to add policies to your cluster. The basic principle of an admission controller is to intercept incoming requests to a given kubernetes api server and check if a field matches an expression, then approve or deny the request based on that determination. If you're not familiar with admission controllers already, I'd recommend reading [the official documentation](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#what-are-they).
