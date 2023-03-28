@@ -471,4 +471,4 @@ I'll also update some of the placeholder content to be more like an actual resum
 
 LaTeX is a very old language with a lot of inconsistencies, weird syntax, and small issues that can make it a frustrating language to work with. That being said, I love the results and will definitely use it going forward. If you'd like to see this resume on github, check it out [here](https://github.com/cnorling/resume-public)! You're more than welcome to fork it for personal use and tweak it however you like =\]
 
-Thanks for reading!
+If you enjoyed this article, have any questions, noticed something inaccurate, or you just want to say hi feel free to drop a comment below or send an email to me@norling.io

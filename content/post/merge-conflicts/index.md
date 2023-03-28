@@ -43,3 +43,5 @@ git merge a -X theirs
 ```
 
 After running this script, `foo` in branch `b` will be overwritten with the changes from branch `a`. You can safely delete both branches `a` and `b` without reprecussions (unless for some reason you have a branch that already exists named a or b).
+
+If you enjoyed this article, have any questions, noticed something inaccurate, or you just want to say hi feel free to drop a comment below or send an email to me@norling.io

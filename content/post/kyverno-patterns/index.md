@@ -210,3 +210,5 @@ In the previous example, you can see that explicit commit hashes are targeted ra
 ### Avoid mutating resources with policies when possible
 
 You can use an admission controller to [mutate offending resources](https://kyverno.io/docs/writing-policies/mutate/) rather than failing them outright. In my opinion this is something you should not do if you can avoid it. It is generally better to correct the resource manifest at its source rather than mutating it. Mutations are excellent for objects like logging sidecars and other container adjacent services.
+
+If you enjoyed this article, have any questions, noticed something inaccurate, or you just want to say hi feel free to drop a comment below or send an email to me@norling.io

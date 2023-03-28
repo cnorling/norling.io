@@ -120,3 +120,5 @@ baz # change this line to anything but baz
 Once you've made your commit message changes, save the file and close it. Git will finalize the rebase, and you can run `git log --oneline` to inspect the changes. To push your changes to the remote git repository, you'll have to run `git push --force-with-lease` here as well
 
 ![the final message edited](edited.png)
+
+If you enjoyed this article, have any questions, noticed something inaccurate, or you just want to say hi feel free to drop a comment below or send an email to me@norling.io

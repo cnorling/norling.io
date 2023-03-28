@@ -22,9 +22,9 @@ If you've worked with git, you've likely needed to do at least one of these at s
 
 ## A Disclaimer About Controversy
 
-*Rebasing involves rewriting history.* \
-*Rewriting history involves force pushing to overwrite the remote state of a repository.* \
-*Force pushing has the potential to delete others work (if you rebase recklessly).*
+_Rebasing involves rewriting history._ \
+_Rewriting history involves force pushing to overwrite the remote state of a repository._ \
+_Force pushing has the potential to delete others work (if you rebase recklessly)._
 
 Rewriting history is controversial. Some say it's okay to modify history because it's sometimes necessary and can enhance git history. Others say it's not okay because git is supposed to be a historical representation of all changes, and you should prefer to roll your fixes forward. In my opinion if your historical modifications don't impact others, it should be acceptable to rewrite history. It's important when managing git history to ensure that you aren't impacting other people's work. You should follow these general practices:
 
@@ -42,7 +42,6 @@ Noninteractive rebases are executed by running `git rebase $GITREVISION`
 
 ## How do I Git Rebase?
 
-
 ### Determine What Commits to Rebase
 
 You can use most valid forms of [gitrevision syntax](https://git-scm.com/docs/gitrevisions), but `git log --oneline` and `git reflog` are the most common options for discovering historical edits. `git log --oneline` will only show you commits. `git reflog` will show you commits in addition to actions you take like checking out branches, other rebases you've done, git resets, commit amends, and other historical modifications made to git. The only time I use referential syntax is if I'm recovering a previously deleted commit since git will locally log the commit even after deleting it.
@@ -51,13 +50,13 @@ You can use most valid forms of [gitrevision syntax](https://git-scm.com/docs/gi
 
 Here's a table of some gitrevision syntaxes you can use in a rebase, and what they roughly translate to.
 
-|syntax|meaning|
-|------|-------|
-|`016a428`|rebase all commits between HEAD and `016a428`|
-|`HEAD@{5}`|rebase all commits contained in my last 5 git actions|
-|`HEAD~5`|rebase the last 5 commits|
-|`HEAD@{5hr}`|rebase all commits made in the last 5 hours|
-|`':/^Foo'`|rebase all commits made between HEAD and the first commit found with a commit message that matches the regular expression `^Foo`|
+| syntax       | meaning                                                                                                                          |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------------- |
+| `016a428`    | rebase all commits between HEAD and `016a428`                                                                                    |
+| `HEAD@{5}`   | rebase all commits contained in my last 5 git actions                                                                            |
+| `HEAD~5`     | rebase the last 5 commits                                                                                                        |
+| `HEAD@{5hr}` | rebase all commits made in the last 5 hours                                                                                      |
+| `':/^Foo'`   | rebase all commits made between HEAD and the first commit found with a commit message that matches the regular expression `^Foo` |
 
 ![an example of the output from git log --oneline](git-log-output.png)
 
@@ -115,6 +114,7 @@ If you're editing any commits that aren't strictly local to your machine, you'll
 ## Deleting Commits
 
 - determine what commits you want to delete by running `git log --oneline` and find the hash of the commit you intend to delete
+
 ```fish
 486f3bf (HEAD -> main) e18155c658
 28cabde 0523d2af6c
@@ -123,19 +123,23 @@ add66be 8759405589 # let's delete this commit
 76d462d f6ecfd8500
 beeef8f (origin/main, origin/HEAD) Initial commit
 ```
+
 - go one past that commit and copy its hash
 - run `git rebase --interactive 76d462d`
 - modify the `git-rebase-todo` to delete the commit
+
 ```fish
 drop add66be 8759405589 # I've change the action on this commit to drop
 pick 58098cf 5a0be3f060
 pick 28cabde 0523d2af6c
 pick 486f3bf e18155c658
 ```
+
 - save and close the `git-rebase-todo`
 - run `git push --force-with-lease` if working with remote changes to overwrite history
 
 If everything worked, the commit should be gone. You can run `git log --oneline` to validate its deletion.
+
 ```fish
 6144ecd (HEAD -> main) e18155c658
 28971d0 0523d2af6c
@@ -144,9 +148,11 @@ ee09104 5a0be3f060
 76d462d f6ecfd8500
 beeef8f (origin/main, origin/HEAD) Initial commit
 ```
+
 ## Editing Commit Content
 
 - determine what commit you want to edit by running `git log --oneline` and find the hash of the commit you intend to modify
+
 ```fish
 2f512ca (HEAD -> main) b8e34da2fb
 1daec94 53a8322ae0
@@ -155,19 +161,23 @@ beeef8f (origin/main, origin/HEAD) Initial commit
 10b8051 79d8d9fc4b
 beeef8f Initial commit
 ```
+
 - go one past that commit and copy its hash
-- run `git rebase --interactive 6dd4f4e` 
+- run `git rebase --interactive 6dd4f4e`
 - modify the `git-rebase-todo` to include your request to edit the commit
+
 ```fish
 edit 49338d3 1890202347 # I've changed the action on this commit to edit
 pick 1daec94 53a8322ae0
 pick 2f512ca b8e34da2fb
 ```
+
 - save and close the `git-rebase-todo`
 - git will pause on the commit you want to edit
 - make your changes and run `git commit --amend` to include the edits
 - run `git rebase --continue` to tell git you're done making your changes
 - run `git push --force-with-lease` if working with remote changes to overwrite history
+
 ```fish
 2093981 (HEAD -> main) b8e34da2fb
 d3ecdd3 53a8322ae0
@@ -182,27 +192,32 @@ If everything worked, the commit should be edited with a new SHA. You can run `g
 ## Combining Commits by Squashing
 
 - determine what commits you want to squash by running `git log --oneline` and find the hash of the oldest commit you want to squash
+
 ```fish
 c3640e6 (HEAD -> main) 7ce9769337
-9f2e595 3c8c13dfff # let's squash these two commits 
+9f2e595 3c8c13dfff # let's squash these two commits
 e1fce22 600affbb4a # let's squash these two commits
 ed85848 1186105185 # into this commit
 64378f8 c8f8d0faf9
 beeef8f Initial commit
 ```
+
 - go one past that commit and copy its hash
 - run `git rebase --interactive 64378f8`
 - modify the `git-rebase-todo` to include your squashes
+
 ```fish
 pick ed85848 1186105185 # this is the commit we're squashing into
 squash e1fce22 600affbb4a # these are the commits we're squashing
 squash 9f2e595 3c8c13dfff # these are the commits we're squashing
 pick c3640e6 7ce9769337
 ```
+
 - save and close the `git-rebase-todo`
 - git will pause on the newly squashed commit and give you an opportunity to modify the commit message if desired
 - save and close the `COMMIT_EDITMSG` file to finish the rebase
 - run `git push --force-with-lease` if working with remote changes to overwrite history
+
 ```fish
 8188e83 (HEAD -> main) 7ce9769337
 1b4f942 1186105185 # the commit has a new SHA meaning the commits were squashed in!
@@ -212,4 +227,4 @@ beeef8f Initial commit
 
 If everything worked, the commit should be edited with a new SHA. You can run `git log --oneline` to validate its modification.
 
-If you have any questions about this article, or if you have suggestions for changes please email me@norling.io
+If you enjoyed this article, have any questions, noticed something inaccurate, or you just want to say hi feel free to drop a comment below or send an email to me@norling.io
