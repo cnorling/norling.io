@@ -12,10 +12,10 @@ languages:
     weight: 1
 
 # Change it to your Disqus shortname before using
-disqusShortname: hugo-theme-stack
+disqusShortname: norling-io
 
 # GA Tracking ID
-googleAnalytics:
+googleAnalytics: G-XRKZVJ60B0
 
 # Theme i18n support
 # Available values: ar, bn, ca, de, el, en, es, fr, hu, id, it, ja, ko, nl, pt-br, th, uk, zh-cn, zh-hk, zh-tw
