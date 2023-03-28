@@ -63,4 +63,4 @@ _(unless the deleted commit was the latest one, then it will be the same)_
 
 Unless you've configured your git garbage collector to discard reflogs, you definitely have everything you need to fix a messed up git rebase. I hope you learned something from this article!
 
-If you have any issues or questions, you're more than welcome to send an email to me@norling.io :\]
+If you enjoyed this article, have any questions, noticed something inaccurate, or you just want to say hi feel free to drop a comment below or send an email to me@norling.io
