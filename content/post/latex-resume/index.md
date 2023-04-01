@@ -114,14 +114,13 @@ I use a package called `mdframed` that uses TikZ to outline text boxes around wo
 
 ## Writing the Resume
 
-It can be very helpful to observe a project from creation to completion, so I've added a step by step example on github you can inspect to compare. A picture of the PDF output is included in the `README.md` of the repository so this blogpost doesn't get too long. You can find it here:
-https://github.com/cnorling/resume-public/tree/main/example
+It can be very helpful to observe a project from creation to completion, so I've added a step by step example on github you can inspect to compare. A picture of the PDF output is included in the `README.md` of the repository so this blogpost doesn't get too long. You can find it [here](https://github.com/cnorling/resume-public/tree/main/example)
 
 ### File Setup
 
 I start by defining a document and a document class. `resume.cls` is the class and `resume.tex` is the document. I put shared functions and formatting related things in `resume.cls`. The content of the resume itself goes in `resume.tex`. I add some content to `resume.cls` to declare its parent document class, and link `resume.tex` to that class. I also add a special environment named document to `resume.tex` and put my name in it.
 
-![](01_file-setup.png)
+![general file setup](01_file-setup.png)
 
 ### Content
 
@@ -129,7 +128,7 @@ When working with a document that requires a lot of formatting, it can be helpfu
 
 Some of the content needs to be handled differently from the others though. I'll declare a list environment for the qualifications and skills, then add some placeholder items to it.
 
-![](02_content.png)
+![adding some content](02_content.png)
 
 ### Heading
 
