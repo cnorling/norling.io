@@ -1,0 +1,170 @@
+<!doctype html><html lang=en-us dir=ltr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="Summary You can edit your most recent commit message by running git commit --amend.
+If you&amp;rsquo;ve already pushed out your commit, you&amp;rsquo;ll have to tell the remote git repository that you intend to rewrite history. You can do this by running git push --force-with-lease after amending your commit.
+Editing older commit messages You can edit older commits with an interactive rebase. A rebase is a way to deconstruct and reconstruct older commits."><title>Editing Git Commit Messages</title><link rel=canonical href=https://norling.io/edit-commit-messages/><link rel=stylesheet href=/scss/style.min.fe253589db5a54c99fe6b16bfbaf0243d856d34f8c07f3534613b39ed043b738.css><meta property="og:title" content="Editing Git Commit Messages"><meta property="og:description" content="Summary You can edit your most recent commit message by running git commit --amend.
+If you&amp;rsquo;ve already pushed out your commit, you&amp;rsquo;ll have to tell the remote git repository that you intend to rewrite history. You can do this by running git push --force-with-lease after amending your commit.
+Editing older commit messages You can edit older commits with an interactive rebase. A rebase is a way to deconstruct and reconstruct older commits."><meta property="og:url" content="https://norling.io/edit-commit-messages/"><meta property="og:site_name" content="Cerise Norling"><meta property="og:type" content="article"><meta property="article:section" content="Post"><meta property="article:tag" content="git"><meta property="article:published_time" content="2023-02-26T10:00:00-06:00"><meta property="article:modified_time" content="2023-02-26T10:00:00-06:00"><meta property="og:image" content="https://norling.io/edit-commit-messages/stars-gdb805d2e7_1920.jpg"><meta name=twitter:title content="Editing Git Commit Messages"><meta name=twitter:description content="Summary You can edit your most recent commit message by running git commit --amend.
+If you&amp;rsquo;ve already pushed out your commit, you&amp;rsquo;ll have to tell the remote git repository that you intend to rewrite history. You can do this by running git push --force-with-lease after amending your commit.
+Editing older commit messages You can edit older commits with an interactive rebase. A rebase is a way to deconstruct and reconstruct older commits."><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://norling.io/edit-commit-messages/stars-gdb805d2e7_1920.jpg"><script async src="https://www.googletagmanager.com/gtag/js?id=G-XRKZVJ60B0"></script>
+<script>var doNotTrack=!1;if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-XRKZVJ60B0",{anonymize_ip:!1})}</script></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"dark")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label="Toggle Menu">
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><figure class=site-avatar><a href=/><img src="https://avatars.githubusercontent.com/u/47022783?v=4" width=300 height=300 class=site-logo loading=lazy alt=Avatar></a></figure><div class=site-meta><h1 class=site-name><a href=/>Cerise Norling</a></h1><h2 class=site-description>Another blog for devops things</h2></div></header><ol class=social-menu><li><a href=https://github.com/cnorling target=_blank title=GitHub><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li><li><a href=https://norling.io/index.xml target=_blank title=RSS><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-rss" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="5" cy="19" r="1"/><path d="M4 4a16 16 0 0116 16"/><path d="M4 11a9 9 0 019 9"/></svg></a></li></ol><ol class=menu id=main-menu><div class=menu-bottom-section><li id=dark-mode-toggle><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg><span>Dark Mode</span></li></div></ol></aside><main class="main full-width"><article class="has-image main-article"><header class=article-header><div class=article-image><a href=/edit-commit-messages/><img src=/edit-commit-messages/stars-gdb805d2e7_1920_hu641232453ba7f7a6fa7a111613442a7d_527261_800x0_resize_q75_box.jpg srcset="/edit-commit-messages/stars-gdb805d2e7_1920_hu641232453ba7f7a6fa7a111613442a7d_527261_800x0_resize_q75_box.jpg 800w, /edit-commit-messages/stars-gdb805d2e7_1920_hu641232453ba7f7a6fa7a111613442a7d_527261_1600x0_resize_q75_box.jpg 1600w" width=800 height=561 loading=lazy alt="Featured image of post Editing Git Commit Messages"></a></div><div class=article-details><div class=article-title-wrapper><h2 class=article-title><a href=/edit-commit-messages/>Editing Git Commit Messages</a></h2></div><footer class=article-time><div><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg><time class=article-time--published>Feb 26, 2023</time></div><div><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg><time class=article-time--reading>6 minute read</time></div></footer></div></header><section class=article-content><h2 id=summary>Summary</h2><p>You can edit your most recent commit message by running <code>git commit --amend</code>.</p><p>If you&rsquo;ve already pushed out your commit, you&rsquo;ll have to tell the remote git repository that you intend to rewrite history. You can do this by running <code>git push --force-with-lease</code> after amending your commit.</p><h2 id=editing-older-commit-messages>Editing older commit messages</h2><p>You can edit older commits with an interactive rebase. A rebase is a way to deconstruct and reconstruct older commits. You can modify things like the files changed in a commit, if the commit was signed, when the commit was created, who it was created by, and in our case you can edit commit messages.</p><p>The first step of a rebase is identifying the rebase&rsquo;s span. Run <code>git log --oneline</code> to get a top-down list of your latest commits. Find the commit you want to edit, then select the commit hash after it and run <code>git rebase --interactive $HASH</code></p><p>In the below example, If we want to edit the commit message <code>baz [e9f16f3]</code>, we will want to run an interactive rebase on <code>bar [aa7b423]</code></p><p><img src=/edit-commit-messages/rebase.png width=373 height=158 srcset="/edit-commit-messages/rebase_hu1f4f45ca0aea6edf864db14061657cc4_7006_480x0_resize_box_3.png 480w, /edit-commit-messages/rebase_hu1f4f45ca0aea6edf864db14061657cc4_7006_1024x0_resize_box_3.png 1024w" loading=lazy alt="an example of how to select commits for an interactive rebase" class=gallery-image data-flex-grow=236 data-flex-basis=566px></p><p>After you run this command, git will start a rebase and your configured git editor will give you a prompt asking how you want to proceed with the rebase. It&rsquo;s worth reading this prompt entirely if you&rsquo;ve never seen it before. I&rsquo;ll summarize what&rsquo;s needed for changing the commit message below this codeblock.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fish data-lang=fish><span class=line><span class=cl><span class=nf>pick</span> e9f16f3 baz
+</span></span><span class=line><span class=cl><span class=nf>pick</span> ff783de buz
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c># Rebase aa7b423..ff783de onto aa7b423 (2 commands)
+</span></span></span><span class=line><span class=cl><span class=c>#
+</span></span></span><span class=line><span class=cl><span class=c># Commands:
+</span></span></span><span class=line><span class=cl><span class=c># p, pick &lt;commit&gt; = use commit
+</span></span></span><span class=line><span class=cl><span class=c># r, reword &lt;commit&gt; = use commit, but edit the commit message
+</span></span></span><span class=line><span class=cl><span class=c># e, edit &lt;commit&gt; = use commit, but stop for amending
+</span></span></span><span class=line><span class=cl><span class=c># s, squash &lt;commit&gt; = use commit, but meld into previous commit
+</span></span></span><span class=line><span class=cl><span class=c># f, fixup [-C | -c] &lt;commit&gt; = like &#34;squash&#34; but keep only the previous
+</span></span></span><span class=line><span class=cl><span class=c>#                    commit&#39;s log message, unless -C is used, in which case
+</span></span></span><span class=line><span class=cl><span class=c>#                    keep only this commit&#39;s message; -c is same as -C but
+</span></span></span><span class=line><span class=cl><span class=c>#                    opens the editor
+</span></span></span><span class=line><span class=cl><span class=c># x, exec &lt;command&gt; = run command (the rest of the line) using shell
+</span></span></span><span class=line><span class=cl><span class=c># b, break = stop here (continue rebase later with &#39;git rebase --continue&#39;)
+</span></span></span><span class=line><span class=cl><span class=c># d, drop &lt;commit&gt; = remove commit
+</span></span></span><span class=line><span class=cl><span class=c># l, label &lt;label&gt; = label current HEAD with a name
+</span></span></span><span class=line><span class=cl><span class=c># t, reset &lt;label&gt; = reset HEAD to a label
+</span></span></span><span class=line><span class=cl><span class=c># m, merge [-C &lt;commit&gt; | -c &lt;commit&gt;] &lt;label&gt; [# &lt;oneline&gt;]
+</span></span></span><span class=line><span class=cl><span class=c># .       create a merge commit using the original merge commit&#39;s
+</span></span></span><span class=line><span class=cl><span class=c># .       message (or the oneline, if no original merge commit was
+</span></span></span><span class=line><span class=cl><span class=c># .       specified); use -c &lt;commit&gt; to reword the commit message
+</span></span></span><span class=line><span class=cl><span class=c>#
+</span></span></span><span class=line><span class=cl><span class=c># These lines can be re-ordered; they are executed from top to bottom.
+</span></span></span><span class=line><span class=cl><span class=c>#
+</span></span></span><span class=line><span class=cl><span class=c># If you remove a line here THAT COMMIT WILL BE LOST.
+</span></span></span><span class=line><span class=cl><span class=c>#
+</span></span></span><span class=line><span class=cl><span class=c># However, if you remove everything, the rebase will be aborted.
+</span></span></span><span class=line><span class=cl><span class=c>#
+</span></span></span></code></pre></td></tr></table></div></div><p>The file you&rsquo;re editing is a <code>git-rebase-todo</code> file. It&rsquo;s used as a catalog of actions you intend to perform with each commit. It includes the action you want to do, the commit hash, and the commit message for easy identification. It&rsquo;s also bottom-up instead of top-down (your newest commits are at the bottom).</p><p><code>pick</code> is the default action. Commits prefixed with <code>pick</code> are left intact as they were before the rebase began. Since we want to edit the commit message &ldquo;baz&rdquo; The action we want to use is <code>reword</code>. Edit your git-rebase-todo file and change the word <code>pick</code> to <code>reword</code> like so</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fish data-lang=fish><span class=line><span class=cl><span class=nf>reword</span> e9f16f3 baz
+</span></span><span class=line><span class=cl><span class=nf>pick</span> ff783de buz
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c># Rebase aa7b423..ff783de onto aa7b423 (2 commands)
+</span></span></span><span class=line><span class=cl><span class=c>#
+</span></span></span><span class=line><span class=cl><span class=c># Commands:
+</span></span></span><span class=line><span class=cl><span class=c># p, pick &lt;commit&gt; = use commit
+</span></span></span><span class=line><span class=cl><span class=c># r, reword &lt;commit&gt; = use commit, but edit the commit message
+</span></span></span><span class=line><span class=cl><span class=c># e, edit &lt;commit&gt; = use commit, but stop for amending
+</span></span></span><span class=line><span class=cl><span class=c># s, squash &lt;commit&gt; = use commit, but meld into previous commit
+</span></span></span><span class=line><span class=cl><span class=c># f, fixup [-C | -c] &lt;commit&gt; = like &#34;squash&#34; but keep only the previous
+</span></span></span><span class=line><span class=cl><span class=c>#                    commit&#39;s log message, unless -C is used, in which case
+</span></span></span><span class=line><span class=cl><span class=c>#                    keep only this commit&#39;s message; -c is same as -C but
+</span></span></span><span class=line><span class=cl><span class=c>#                    opens the editor
+</span></span></span><span class=line><span class=cl><span class=c># x, exec &lt;command&gt; = run command (the rest of the line) using shell
+</span></span></span><span class=line><span class=cl><span class=c># b, break = stop here (continue rebase later with &#39;git rebase --continue&#39;)
+</span></span></span><span class=line><span class=cl><span class=c># d, drop &lt;commit&gt; = remove commit
+</span></span></span><span class=line><span class=cl><span class=c># l, label &lt;label&gt; = label current HEAD with a name
+</span></span></span><span class=line><span class=cl><span class=c># t, reset &lt;label&gt; = reset HEAD to a label
+</span></span></span><span class=line><span class=cl><span class=c># m, merge [-C &lt;commit&gt; | -c &lt;commit&gt;] &lt;label&gt; [# &lt;oneline&gt;]
+</span></span></span><span class=line><span class=cl><span class=c># .       create a merge commit using the original merge commit&#39;s
+</span></span></span><span class=line><span class=cl><span class=c># .       message (or the oneline, if no original merge commit was
+</span></span></span><span class=line><span class=cl><span class=c># .       specified); use -c &lt;commit&gt; to reword the commit message
+</span></span></span><span class=line><span class=cl><span class=c>#
+</span></span></span><span class=line><span class=cl><span class=c># These lines can be re-ordered; they are executed from top to bottom.
+</span></span></span><span class=line><span class=cl><span class=c>#
+</span></span></span><span class=line><span class=cl><span class=c># If you remove a line here THAT COMMIT WILL BE LOST.
+</span></span></span><span class=line><span class=cl><span class=c>#
+</span></span></span><span class=line><span class=cl><span class=c># However, if you remove everything, the rebase will be aborted.
+</span></span></span><span class=line><span class=cl><span class=c>#
+</span></span></span></code></pre></td></tr></table></div></div><p>After you&rsquo;ve made your changes, save the file and close it. Git will then prompt you to edit the commit message.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fish data-lang=fish><span class=line><span class=cl><span class=nf>baz</span> <span class=c># change this line to anything but baz
+</span></span></span><span class=line><span class=cl><span class=c></span>
+</span></span><span class=line><span class=cl><span class=c># Please enter the commit message for your changes. Lines starting
+</span></span></span><span class=line><span class=cl><span class=c># with &#39;#&#39; will be ignored, and an empty message aborts the commit.
+</span></span></span><span class=line><span class=cl><span class=c>#
+</span></span></span><span class=line><span class=cl><span class=c># Date:      Sun Feb 26 00:19:24 2023 -0700
+</span></span></span><span class=line><span class=cl><span class=c>#
+</span></span></span><span class=line><span class=cl><span class=c># interactive rebase in progress; onto aa7b423
+</span></span></span><span class=line><span class=cl><span class=c># Last command done (1 command done):
+</span></span></span><span class=line><span class=cl><span class=c>#    reword e9f16f3 baz
+</span></span></span><span class=line><span class=cl><span class=c># Next command to do (1 remaining command):
+</span></span></span><span class=line><span class=cl><span class=c>#    pick ff783de buz
+</span></span></span><span class=line><span class=cl><span class=c># You are currently editing a commit while rebasing branch &#39;git&#39; on &#39;aa7b423&#39;.
+</span></span></span><span class=line><span class=cl><span class=c>#
+</span></span></span><span class=line><span class=cl><span class=c># Changes to be committed:
+</span></span></span><span class=line><span class=cl><span class=c>#	new file:   baz
+</span></span></span><span class=line><span class=cl><span class=c>#
+</span></span></span></code></pre></td></tr></table></div></div><p>Once you&rsquo;ve made your commit message changes, save the file and close it. Git will finalize the rebase, and you can run <code>git log --oneline</code> to inspect the changes. To push your changes to the remote git repository, you&rsquo;ll have to run <code>git push --force-with-lease</code> here as well</p><p><img src=/edit-commit-messages/edited.png width=373 height=158 srcset="/edit-commit-messages/edited_huf6671da211fd6c4fd902d6bcb5e8f2a8_4299_480x0_resize_box_3.png 480w, /edit-commit-messages/edited_huf6671da211fd6c4fd902d6bcb5e8f2a8_4299_1024x0_resize_box_3.png 1024w" loading=lazy alt="the final message edited" class=gallery-image data-flex-grow=236 data-flex-basis=566px></p><p>If you enjoyed this article, have any questions, noticed something inaccurate, or you just want to say hi feel free to drop a comment below or send an email to <a class=link href=mailto:me@norling.io>me@norling.io</a></p></section><footer class=article-footer><section class=article-tags><a href=/tags/git/>git</a></section><section class=article-copyright><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg><span>Licensed under CC BY-NC-SA 4.0</span></section></footer></article><aside class=related-content--wrapper><h2 class=section-title>Related content</h2><div class=related-content><div class="flex article-list--tile"><article class=has-image><a href=/rebase-recovery/><div class=article-image><img src=/rebase-recovery/_hu3d03a01dcc18bc5be0e67db3d8d209a6_2434332_1495786b6e673c6755740d7ebc070bf0.jpg width=250 height=150 loading=lazy alt="Featured image of post Recovering From a Botched Git Rebase" data-key=rebase-recovery data-hash="md5-1k9SF9sejUABO20udNxpSw=="></div><div class=article-details><h2 class=article-title>Recovering From a Botched Git Rebase</h2></div></a></article><article class=has-image><a href=/merge-conflicts/><div class=article-image><img src=/merge-conflicts/pexels-pixabay-41951.0c2ac6a5bd625b62818dc5a15173d612_hu3d03a01dcc18bc5be0e67db3d8d209a6_204362_250x150_fill_q75_box_smart1.jpg width=250 height=150 loading=lazy alt="Featured image of post Easily Resolving Git Merge Conflicts" data-key=merge-conflicts data-hash="md5-DCrGpb1iW2KBjcWhUXPWEg=="></div><div class=article-details><h2 class=article-title>Easily Resolving Git Merge Conflicts</h2></div></a></article><article class=has-image><a href=/git-rebase/><div class=article-image><img src=/git-rebase/stars-ijf3k5368.dea515aeebaa05b66076361302d1d2bf_hu353eec6600104335652ac7e019354282_892577_250x150_fill_q75_box_smart1.jpg width=250 height=150 loading=lazy alt="Featured image of post Rewriting History With Git Rebases" data-key=git-rebase data-hash="md5-3qUVruuqBbZgdjYTAtHSvw=="></div><div class=article-details><h2 class=article-title>Rewriting History With Git Rebases</h2></div></a></article></div></div></aside><script src=https://utteranc.es/client.js repo=cnorling/norling.io issue-term=pathname crossorigin=anonymous async></script><style>.utterances{max-width:unset}</style><script>function setUtterancesTheme(e){let t=document.querySelector(".utterances iframe");t&&t.contentWindow.postMessage({type:"set-theme",theme:`github-${e}`},"https://utteranc.es")}addEventListener("message",e=>{if(e.origin!=="https://utteranc.es")return;setUtterancesTheme(document.documentElement.dataset.scheme)}),window.addEventListener("onColorSchemeChange",e=>{setUtterancesTheme(e.detail)})</script><footer class=site-footer><section class=copyright>&copy;
+2020 -
+2023 Cerise Norling</section><section class=powerby>Built with <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a><br>Theme <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=3.12.0>Stack</a></b> designed by <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a></section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">Table of contents</h2><div class=widget--toc><nav id=TableOfContents><ol><li><a href=#summary>Summary</a></li><li><a href=#editing-older-commit-messages>Editing older commit messages</a></li></ol></nav></div></section></aside></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/ts/main.js defer></script>
+<script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script></body></html>

@@ -1,0 +1,663 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>git on Cerise Norling</title><link>https://norling.io/tags/git/</link><description>Recent content in git on Cerise Norling</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 27 Mar 2023 10:00:00 -0600</lastBuildDate><atom:link href="https://norling.io/tags/git/index.xml" rel="self" type="application/rss+xml"/><item><title>Recovering From a Botched Git Rebase</title><link>https://norling.io/rebase-recovery/</link><pubDate>Mon, 27 Mar 2023 10:00:00 -0600</pubDate><guid>https://norling.io/rebase-recovery/</guid><description>&lt;img src="https://norling.io/rebase-recovery/pexels-delcho-dichev-517884.jpg" alt="Featured image of post Recovering From a Botched Git Rebase" />&lt;p>&lt;img src="https://norling.io/rebase-recovery/rebase-messup.jpg"
+width="672"
+height="429"
+srcset="https://norling.io/rebase-recovery/rebase-messup_hu506c34896c96864deb1e6640acb7fb2b_69275_480x0_resize_q75_box.jpg 480w, https://norling.io/rebase-recovery/rebase-messup_hu506c34896c96864deb1e6640acb7fb2b_69275_1024x0_resize_q75_box.jpg 1024w"
+loading="lazy"
+alt="we&amp;rsquo;ve all been there"
+class="gallery-image"
+data-flex-grow="156"
+data-flex-basis="375px"
+>&lt;/p>
+&lt;p>When rebasing, it&amp;rsquo;s inevitable that you will delete something you didn&amp;rsquo;t intend to, or finish a rebase before you&amp;rsquo;re actually done. When this happens, the best thing you can do is take a step back and truly evaluate the current state of the remote repository and your local repository.&lt;/p>
+&lt;ul>
+&lt;li>Is the content actually deleted?&lt;/li>
+&lt;li>Have I pushed my changes out yet?&lt;/li>
+&lt;li>Could someone else have a copy of the content I deleted?&lt;/li>
+&lt;/ul>
+&lt;p>Even if you&amp;rsquo;ve already force pushed out your changes, there are ways to recover deleted content.&lt;/p>
+&lt;h2 id="check-if-theres-anything-in-git-reflog">Check if there&amp;rsquo;s anything in git reflog&lt;/h2>
+&lt;p>Git Reflog is a &lt;em>referential log&lt;/em> of all the states your local git repository has been in. Every removed branch, deleted commit, unsigned commit, previously squashed commits, even viewing a specific commit SHA is logged and recorded. Reflog is a local only thing, so if you delete a local git repository and clone it down again you&amp;rsquo;ll lose all your reflogs.&lt;/p>
+&lt;p>You can access your referential logs by running &lt;code>git reflog&lt;/code>. By default, it retains the last 90 days of git activity. Every time you run a git specific action, git runs a garbage collector that discards anything outside the defined retention period. If you wanted to, you could increase this threshold by running &lt;code>git config gc.reflogExpire 120&lt;/code>. Don&amp;rsquo;t forget to pass &lt;code>--global&lt;/code> if you want it to apply to all repositories.&lt;/p>
+&lt;h3 id="accessing-reflogs">Accessing reflogs&lt;/h3>
+&lt;p>All reflogs are dynamic and measured according to an offset from your latest action. To access reflogs, first you need to identify which reflog to examine. Run &lt;code>git reflog&lt;/code> to identify the state you want to examine. Then run &lt;code>git checkout HEAD{23}&lt;/code> where 23 is the number offset from &lt;code>git reflog&lt;/code>.&lt;/p>
+&lt;p>In this state, you can poke around and look at the file content to confirm that it is what it should be.&lt;/p>
+&lt;h3 id="accessing-git-logs-within-reflogs">Accessing git logs within reflogs&lt;/h3>
+&lt;p>Reflogs are really just a reference to a specific commit SHA. The content of that SHA also happens to include the historical revisions at that point in time. That includes the historical output from &lt;code>git log&lt;/code>. If you need to identify a commit SHA that&amp;rsquo;s no longer in &lt;code>git log&lt;/code>, you can checkout an earlier reflog and run &lt;code>git log&lt;/code> to browse commits that were associated with your branch at that point in time. It&amp;rsquo;s very useful for identifying deleted content.&lt;/p>
+&lt;p>&lt;img src="https://norling.io/rebase-recovery/reflog-log.png"
+width="1024"
+height="688"
+srcset="https://norling.io/rebase-recovery/reflog-log_hu1e48aad445ea6c2e917bf218a25b915d_82055_480x0_resize_box_3.png 480w, https://norling.io/rebase-recovery/reflog-log_hu1e48aad445ea6c2e917bf218a25b915d_82055_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="Even &amp;ldquo;reflogs&amp;rdquo; have logs"
+class="gallery-image"
+data-flex-grow="148"
+data-flex-basis="357px"
+>&lt;/p>
+&lt;h3 id="what-if-i-dont-have-reflogs">What if I don&amp;rsquo;t have reflogs?&lt;/h3>
+&lt;p>Even if your reflogs are empty, if you know the commit SHA or have tagged a specific commit you can perform a &lt;code>git reset --hard $SHA&lt;/code> to reset to that point in time. The trick there is to know the SHA since if there&amp;rsquo;s no reflog, you&amp;rsquo;re going to have a hard time finding the SHA if it&amp;rsquo;s just local.&lt;/p>
+&lt;h2 id="examples">Examples&lt;/h2>
+&lt;h3 id="completely-undoing-a-git-rebase">Completely undoing a git rebase&lt;/h3>
+&lt;p>Undoing a rebase completely actually isn&amp;rsquo;t that bad. The process is simply to identify the commit SHA or reflog before the rebase started, then perform a &lt;code>git reset --hard $REF&lt;/code> like so&lt;/p>
+&lt;p>&lt;img src="https://norling.io/rebase-recovery/rebase-undo.png"
+width="1024"
+height="711"
+srcset="https://norling.io/rebase-recovery/rebase-undo_hu159e2797ef8bebcd1b1a3b2c94cf796d_91982_480x0_resize_box_3.png 480w, https://norling.io/rebase-recovery/rebase-undo_hu159e2797ef8bebcd1b1a3b2c94cf796d_91982_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="Undoing a git rebase"
+class="gallery-image"
+data-flex-grow="144"
+data-flex-basis="345px"
+>&lt;/p>
+&lt;h3 id="cherrypicking-deleted-commits">Cherrypicking deleted commits&lt;/h3>
+&lt;p>If you need to be more selective about what you do and don&amp;rsquo;t recover, cherrypicking commit SHAs might be a good option for you.&lt;/p>
+&lt;p>The hard part is knowing and discovering the commit SHA you intend to recover. Even after you delete commits, they still exist both locally and (maybe) remotely. If you&amp;rsquo;re trying to recover a deleted commit and you know the commit SHA, you can run &lt;code>git cherry-pick $SHA&lt;/code> to get that commit back. After the cherrypick, the commit SHA might change since it&amp;rsquo;s now incorporating the changes between how far back from head it was and where it is now.&lt;/p>
+&lt;p>&lt;em>(unless the deleted commit was the latest one, then it will be the same)&lt;/em>&lt;/p>
+&lt;p>&lt;img src="https://norling.io/rebase-recovery/soft-delete.png"
+width="1024"
+height="462"
+srcset="https://norling.io/rebase-recovery/soft-delete_hu38138fff9dcaf0ccf220c430f328fa9a_53049_480x0_resize_box_3.png 480w, https://norling.io/rebase-recovery/soft-delete_hu38138fff9dcaf0ccf220c430f328fa9a_53049_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="Commits never die, they just fade away"
+class="gallery-image"
+data-flex-grow="221"
+data-flex-basis="531px"
+>&lt;/p>
+&lt;h2 id="summary">Summary&lt;/h2>
+&lt;p>Unless you&amp;rsquo;ve configured your git garbage collector to discard reflogs, you definitely have everything you need to fix a messed up git rebase. I hope you learned something from this article!&lt;/p>
+&lt;p>If you enjoyed this article, have any questions, noticed something inaccurate, or you just want to say hi feel free to drop a comment below or send an email to &lt;a class="link" href="mailto:me@norling.io" >me@norling.io&lt;/a>&lt;/p></description></item><item><title>Easily Resolving Git Merge Conflicts</title><link>https://norling.io/merge-conflicts/</link><pubDate>Mon, 13 Mar 2023 10:00:00 -0600</pubDate><guid>https://norling.io/merge-conflicts/</guid><description>&lt;img src="https://norling.io/merge-conflicts/pexels-pixabay-41951.jpg" alt="Featured image of post Easily Resolving Git Merge Conflicts" />&lt;h2 id="when-it-rains-it-pours">When it rains it pours&lt;/h2>
+&lt;p>It seems like whenever there&amp;rsquo;s a merge conflict, it&amp;rsquo;s rarely just one file in a single commit. It&amp;rsquo;s always multiple files in multiple commits, and that&amp;rsquo;s where the endless stream of pain comes when you do things like cherry pick multiple commits or run &lt;code>git pull origin main&lt;/code>.&lt;/p>
+&lt;p>Merge conflicts in git are a necessary evil &lt;em>because&lt;/em> of the nature of git. Git has zero insight into which changes precede over eachother, and it relies on the user to make those informed decisions.&lt;/p>
+&lt;h2 id="making-things-easier-with-merge-strategy-options">Making things easier with merge strategy options&lt;/h2>
+&lt;p>Any command that involves a merge conflict is also going to include the optional parameter for specifying a merge strategy. &lt;code>-X ours&lt;/code> and &lt;code>-X theirs&lt;/code> are two neat ways to say&lt;/p>
+&lt;blockquote>
+&lt;p>If there are conflicts, prefer these changes over those&lt;/p>
+&lt;/blockquote>
+&lt;h2 id="in-practice">In Practice&lt;/h2>
+&lt;p>If you want to try it for yourself, run this shell script!&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fish" data-lang="fish">&lt;span class="line">&lt;span class="cl">&lt;span class="nf">git&lt;/span> branch a
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nf">git&lt;/span> branch b
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nf">git&lt;/span> checkout a
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">echo&lt;/span> &lt;span class="s2">&amp;#34;a&amp;#34;&lt;/span> &lt;span class="o">&amp;gt;&lt;/span> foo
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nf">git&lt;/span> add foo
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nf">git&lt;/span> commit &lt;span class="na">-m&lt;/span> &lt;span class="s2">&amp;#34;added a to foo&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nf">git&lt;/span> checkout b
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">echo&lt;/span> &lt;span class="s2">&amp;#34;b&amp;#34;&lt;/span> &lt;span class="o">&amp;gt;&lt;/span> foo
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nf">git&lt;/span> add foo
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nf">git&lt;/span> commit &lt;span class="na">-m&lt;/span> &lt;span class="s2">&amp;#34;added b to foo&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nf">git&lt;/span> merge a &lt;span class="na">-X&lt;/span> theirs
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>After running this script, &lt;code>foo&lt;/code> in branch &lt;code>b&lt;/code> will be overwritten with the changes from branch &lt;code>a&lt;/code>. You can safely delete both branches &lt;code>a&lt;/code> and &lt;code>b&lt;/code> without reprecussions (unless for some reason you have a branch that already exists named a or b).&lt;/p>
+&lt;p>If you enjoyed this article, have any questions, noticed something inaccurate, or you just want to say hi feel free to drop a comment below or send an email to &lt;a class="link" href="mailto:me@norling.io" >me@norling.io&lt;/a>&lt;/p></description></item><item><title>Rewriting History With Git Rebases</title><link>https://norling.io/git-rebase/</link><pubDate>Mon, 06 Mar 2023 10:00:00 -0600</pubDate><guid>https://norling.io/git-rebase/</guid><description>&lt;img src="https://norling.io/git-rebase/stars-ijf3k5368.jpg" alt="Featured image of post Rewriting History With Git Rebases" />&lt;p>Have you or a loved one ever wanted to:&lt;/p>
+&lt;ul>
+&lt;li>delete a commit&lt;/li>
+&lt;li>edit the content of a commit&lt;/li>
+&lt;li>remove a specific file that was accidentally added to a commit&lt;/li>
+&lt;li>include missed files in a commit&lt;/li>
+&lt;li>fix a typo in an old commit message&lt;/li>
+&lt;li>combine a bunch of commits together&lt;/li>
+&lt;/ul>
+&lt;p>If you&amp;rsquo;ve worked with git, you&amp;rsquo;ve likely needed to do at least one of these at some point. And if you&amp;rsquo;re like me, you&amp;rsquo;ve probably read over the &lt;code>--help&lt;/code> documentation of git to figure out how to do some of these things, and oh boy the docs can be cagey about telling you what exactly to do. This article is a reference on just a few things you can do with git rebases, and how to do it. &lt;a class="link" href="https://git-scm.com/book/en/v2/Git-Tools-Rewriting-History" target="_blank" rel="noopener"
+>Here&amp;rsquo;s the equivalent article&lt;/a> directly from the git documentation if you&amp;rsquo;re interested in further reading.&lt;/p>
+&lt;h2 id="rewriting-history-is-controversial">Rewriting history is controversial&lt;/h2>
+&lt;p>&lt;em>Rebasing involves rewriting history.&lt;/em> &lt;br>
+&lt;em>Rewriting history involves force pushing to overwrite the remote state of a repository.&lt;/em> &lt;br>
+&lt;em>Force pushing has the potential to delete others work (if you rebase recklessly).&lt;/em>&lt;/p>
+&lt;p>Rewriting history is controversial. Some say it&amp;rsquo;s okay to modify history because it&amp;rsquo;s sometimes necessary and can enhance git history. Others say it&amp;rsquo;s not okay because git is supposed to be a historical representation of all changes, and you should prefer to roll your fixes forward. In my opinion if your historical modifications don&amp;rsquo;t impact others, it should be acceptable to rewrite history. It&amp;rsquo;s important when managing git history to ensure that you aren&amp;rsquo;t impacting other people&amp;rsquo;s work. You should follow these general practices:&lt;/p>
+&lt;ul>
+&lt;li>Always use &lt;code>--force-with-lease&lt;/code> when pushing out rebases.&lt;/li>
+&lt;li>Avoid rewriting history if you&amp;rsquo;re collaborating with others on the same branch.&lt;/li>
+&lt;li>If you have to rebase changes while working with others, &lt;code>git pull&lt;/code> often to always make sure you&amp;rsquo;re working with the latest content.&lt;/li>
+&lt;li>Don&amp;rsquo;t edit other people&amp;rsquo;s commits unless they know about and consent to the edits.&lt;/li>
+&lt;/ul>
+&lt;h2 id="so-what-is-a-git-rebase">So what is a git rebase?&lt;/h2>
+&lt;p>A git rebase is the act of disassembling and reassembling a range of commits. The function&amp;rsquo;s name comes from its original purpose of changing the forked location of your branch to a different commit or branch. There are two general types of rebases. Ones that require human interaction to complete, and ones that do not. A human interactive rebase would involve doing things like adding, editing, deleting, combining, and splitting commits. A noninteractive rebase would be attaching your base to a different branch.&lt;/p>
+&lt;p>Interactive rebases are executed by running &lt;code>git rebase --interactive $GITREVISION&lt;/code>
+Non-interactive rebases are executed by running &lt;code>git rebase $GITREVISION&lt;/code>&lt;/p>
+&lt;h2 id="how-do-i-git-rebase">How do I git rebase?&lt;/h2>
+&lt;h3 id="determine-what-commits-to-rebase">Determine what commits to rebase&lt;/h3>
+&lt;p>You can use most valid forms of &lt;a class="link" href="https://git-scm.com/docs/gitrevisions" target="_blank" rel="noopener"
+>gitrevision syntax&lt;/a>, but &lt;code>git log --oneline&lt;/code> and &lt;code>git reflog&lt;/code> are the most common options for discovering historical edits. &lt;code>git log --oneline&lt;/code> will only show you commits. &lt;code>git reflog&lt;/code> will show you commits in addition to actions you take like checking out branches, other rebases you&amp;rsquo;ve done, git resets, commit amends, and other historical modifications made to git. The only time I use referential syntax is if I&amp;rsquo;m recovering a previously deleted commit since git will locally log the commit even after deleting it.&lt;/p>
+&lt;p>&lt;img src="https://norling.io/git-rebase/reflog-vs-log.png"
+width="1479"
+height="557"
+srcset="https://norling.io/git-rebase/reflog-vs-log_hu8e79abb3556b9acee6e463bc311d5ade_90512_480x0_resize_box_3.png 480w, https://norling.io/git-rebase/reflog-vs-log_hu8e79abb3556b9acee6e463bc311d5ade_90512_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="an example showcasing the differences between a git log and git reflog with git commits in their relative positions"
+class="gallery-image"
+data-flex-grow="265"
+data-flex-basis="637px"
+>&lt;/p>
+&lt;p>Here&amp;rsquo;s a table of some gitrevision syntaxes you can use in a rebase, and what they roughly translate to.&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>syntax&lt;/th>
+&lt;th>meaning&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>016a428&lt;/code>&lt;/td>
+&lt;td>rebase all commits between HEAD and &lt;code>016a428&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>HEAD@{5}&lt;/code>&lt;/td>
+&lt;td>rebase all commits contained in my last 5 git actions&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>HEAD~5&lt;/code>&lt;/td>
+&lt;td>rebase the last 5 commits&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>HEAD@{5hr}&lt;/code>&lt;/td>
+&lt;td>rebase all commits made in the last 5 hours&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>':/^Foo'&lt;/code>&lt;/td>
+&lt;td>rebase all commits made between HEAD and the first commit found with a commit message that matches the regular expression &lt;code>^Foo&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>&lt;img src="https://norling.io/git-rebase/git-log-output.png"
+width="1024"
+height="300"
+srcset="https://norling.io/git-rebase/git-log-output_huca4dee658d4610e5872360461a217451_14147_480x0_resize_box_3.png 480w, https://norling.io/git-rebase/git-log-output_huca4dee658d4610e5872360461a217451_14147_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="an example of the output from git log &amp;ndash;oneline"
+class="gallery-image"
+data-flex-grow="341"
+data-flex-basis="819px"
+>&lt;/p>
+&lt;h3 id="edit-your-git-rebase-todo">Edit your git-rebase-todo&lt;/h3>
+&lt;p>A &lt;code>git-rebase-todo&lt;/code> file is a manifest containing all the commits in your rebase that you can edit to instruct git on what changes you want to make. It includes the action you want to do, the commit hash, and the commit message for easy identification. An example looks like this:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fish" data-lang="fish">&lt;span class="line">&lt;span class="cl">&lt;span class="nf">pick&lt;/span> e9f16f3 baz
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nf">pick&lt;/span> ff783de buz
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Rebase aa7b423..ff783de onto aa7b423 (2 commands)
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">#
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Commands:
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># p, pick &amp;lt;commit&amp;gt; = use commit
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># r, reword &amp;lt;commit&amp;gt; = use commit, but edit the commit message
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># e, edit &amp;lt;commit&amp;gt; = use commit, but stop for amending
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># s, squash &amp;lt;commit&amp;gt; = use commit, but meld into previous commit
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># f, fixup [-C | -c] &amp;lt;commit&amp;gt; = like &amp;#34;squash&amp;#34; but keep only the previous
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># commit&amp;#39;s log message, unless -C is used, in which case
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># keep only this commit&amp;#39;s message; -c is same as -C but
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># opens the editor
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># x, exec &amp;lt;command&amp;gt; = run command (the rest of the line) using shell
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># b, break = stop here (continue rebase later with &amp;#39;git rebase --continue&amp;#39;)
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># d, drop &amp;lt;commit&amp;gt; = remove commit
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># l, label &amp;lt;label&amp;gt; = label current HEAD with a name
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># t, reset &amp;lt;label&amp;gt; = reset HEAD to a label
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># m, merge [-C &amp;lt;commit&amp;gt; | -c &amp;lt;commit&amp;gt;] &amp;lt;label&amp;gt; [# &amp;lt;oneline&amp;gt;]
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># . create a merge commit using the original merge commit&amp;#39;s
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># . message (or the oneline, if no original merge commit was
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># . specified); use -c &amp;lt;commit&amp;gt; to reword the commit message
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">#
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># These lines can be re-ordered; they are executed from top to bottom.
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">#
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># If you remove a line here THAT COMMIT WILL BE LOST.
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">#
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># However, if you remove everything, the rebase will be aborted.
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">#
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>The only commands in that list I haven&amp;rsquo;t used are exec, break, label, reset, and merge.&lt;/p>
+&lt;h3 id="start-the-rebase">Start the rebase&lt;/h3>
+&lt;p>As soon as you save the &lt;code>git-rebase-todo&lt;/code> file and close it, the rebase will start. The first step git does is it saves all your commits into a staging area for safekeeping if you need to perform any reversions. Then it goes through each commit oldest to newest. Actions like pick, squash, fixup, and drop will be executed automatically. Actions like reword and edit will pause for you to make your requested changes. If it&amp;rsquo;s a git message change, it will open the commit message file and allow you to make your changes.&lt;/p>
+&lt;p>Edit steps are a bit more complex. Git has no idea what modifications you intend to make on the edit step, so you need to tell it when you&amp;rsquo;re finished. You can make any changes you need to the commit, and once you&amp;rsquo;re finished you run &lt;code>git commit --amend&lt;/code> to add your content to the commit. Then run &lt;code>git rebase --continue&lt;/code> to tell git you&amp;rsquo;re done with the current commit.&lt;/p>
+&lt;h3 id="push-up-your-rebase">Push up your rebase&lt;/h3>
+&lt;p>If you&amp;rsquo;re editing any commits that aren&amp;rsquo;t strictly local to your machine, you&amp;rsquo;ll have to instruct your remote git website that yes, you did mean to delete that commit. To do this, run &lt;code>git push --force-with-lease&lt;/code>. If you don&amp;rsquo;t, git will reject your changes when you try and push because it thinks it has content you&amp;rsquo;re missing that you need to pull down.&lt;/p>
+&lt;p>&lt;code>--force-with-lease&lt;/code> is the same as &lt;code>--force&lt;/code> except it has a failsafe to abort if there are remote changes your local git client doesn&amp;rsquo;t know about. Always use it when force pushing changes.&lt;/p>
+&lt;h2 id="deleting-commits">Deleting commits&lt;/h2>
+&lt;ol>
+&lt;li>Determine what commits you want to delete by running &lt;code>git log --oneline&lt;/code> and find the hash of the commit you intend to delete&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fish" data-lang="fish">&lt;span class="line">&lt;span class="cl">&lt;span class="nf">486f3bf&lt;/span> &lt;span class="o">(&lt;/span>&lt;span class="nf">HEAD&lt;/span> &lt;span class="na">-&amp;gt;&lt;/span> main&lt;span class="o">)&lt;/span> e18155c658
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nf">28cabde&lt;/span> 0523d2af6c
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nf">58098cf&lt;/span> 5a0be3f060
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nf">add66be&lt;/span> &lt;span class="m">8759405589&lt;/span> &lt;span class="c"># let&amp;#39;s delete this commit
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span>&lt;span class="nf">76d462d&lt;/span> f6ecfd8500
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nf">beeef8f&lt;/span> &lt;span class="o">(&lt;/span>&lt;span class="nf">origin&lt;/span>/main, origin/HEAD&lt;span class="o">)&lt;/span> Initial commit
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ol start="2">
+&lt;li>Go one past that commit and copy its hash&lt;/li>
+&lt;li>Run &lt;code>git rebase --interactive 76d462d&lt;/code>&lt;/li>
+&lt;li>Modify the &lt;code>git-rebase-todo&lt;/code> to delete the commit&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fish" data-lang="fish">&lt;span class="line">&lt;span class="cl">&lt;span class="nf">drop&lt;/span> add66be &lt;span class="m">8759405589&lt;/span> &lt;span class="c"># I&amp;#39;ve change the action on this commit to drop
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span>&lt;span class="nf">pick&lt;/span> 58098cf 5a0be3f060
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nf">pick&lt;/span> 28cabde 0523d2af6c
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nf">pick&lt;/span> 486f3bf e18155c658
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ol start="5">
+&lt;li>Save and close the &lt;code>git-rebase-todo&lt;/code>&lt;/li>
+&lt;li>Run &lt;code>git push --force-with-lease&lt;/code> if working with remote changes to overwrite history&lt;/li>
+&lt;/ol>
+&lt;p>If everything worked, the commit should be gone. You can run &lt;code>git log --oneline&lt;/code> to validate its deletion.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fish" data-lang="fish">&lt;span class="line">&lt;span class="cl">&lt;span class="nf">6144ecd&lt;/span> &lt;span class="o">(&lt;/span>&lt;span class="nf">HEAD&lt;/span> &lt;span class="na">-&amp;gt;&lt;/span> main&lt;span class="o">)&lt;/span> e18155c658
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nf">28971d0&lt;/span> 0523d2af6c
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nf">ee09104&lt;/span> 5a0be3f060
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># yay the commit is gone!
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span>&lt;span class="nf">76d462d&lt;/span> f6ecfd8500
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nf">beeef8f&lt;/span> &lt;span class="o">(&lt;/span>&lt;span class="nf">origin&lt;/span>/main, origin/HEAD&lt;span class="o">)&lt;/span> Initial commit
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="editing-commit-content">Editing commit content&lt;/h2>
+&lt;ol>
+&lt;li>Determine what commit you want to edit by running &lt;code>git log --oneline&lt;/code> and find the SHA of the commit you intend to modify&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fish" data-lang="fish">&lt;span class="line">&lt;span class="cl">&lt;span class="nf">2f512ca&lt;/span> &lt;span class="o">(&lt;/span>&lt;span class="nf">HEAD&lt;/span> &lt;span class="na">-&amp;gt;&lt;/span> main&lt;span class="o">)&lt;/span> b8e34da2fb
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nf">1daec94&lt;/span> 53a8322ae0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nf">49338d3&lt;/span> &lt;span class="m">1890202347&lt;/span> &lt;span class="c"># let&amp;#39;s edit this commit
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span>&lt;span class="nf">6dd4f4e&lt;/span> 3fc41f2708
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nf">10b8051&lt;/span> 79d8d9fc4b
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nf">beeef8f&lt;/span> Initial commit
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ol start="2">
+&lt;li>Go one past that commit and copy its commit SHA&lt;/li>
+&lt;li>Run &lt;code>git rebase --interactive 6dd4f4e&lt;/code>&lt;/li>
+&lt;li>Modify the &lt;code>git-rebase-todo&lt;/code> to include your request to edit the commit&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fish" data-lang="fish">&lt;span class="line">&lt;span class="cl">&lt;span class="nf">edit&lt;/span> 49338d3 &lt;span class="m">1890202347&lt;/span> &lt;span class="c"># I&amp;#39;ve changed the action on this commit to edit
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span>&lt;span class="nf">pick&lt;/span> 1daec94 53a8322ae0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nf">pick&lt;/span> 2f512ca b8e34da2fb
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ol start="5">
+&lt;li>Save and close the &lt;code>git-rebase-todo&lt;/code>&lt;/li>
+&lt;li>Git will pause on the commit you want to edit&lt;/li>
+&lt;li>Make your changes and run &lt;code>git commit --amend&lt;/code> to include the edits&lt;/li>
+&lt;li>Run &lt;code>git rebase --continue&lt;/code> to tell git you&amp;rsquo;re done making your changes&lt;/li>
+&lt;li>Run &lt;code>git push --force-with-lease&lt;/code> if working with remote changes to overwrite history&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fish" data-lang="fish">&lt;span class="line">&lt;span class="cl">&lt;span class="nf">2093981&lt;/span> &lt;span class="o">(&lt;/span>&lt;span class="nf">HEAD&lt;/span> &lt;span class="na">-&amp;gt;&lt;/span> main&lt;span class="o">)&lt;/span> b8e34da2fb
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nf">d3ecdd3&lt;/span> 53a8322ae0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nf">12d9704&lt;/span> &lt;span class="m">1890202347&lt;/span> &lt;span class="c"># this commit has a new SHA meaning the changes went through!
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span>&lt;span class="nf">6dd4f4e&lt;/span> 3fc41f2708
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nf">10b8051&lt;/span> 79d8d9fc4b
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nf">beeef8f&lt;/span> Initial commit
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>If everything worked, the commit should be edited with a new SHA. You can run &lt;code>git log --oneline&lt;/code> to validate its modification.&lt;/p>
+&lt;h2 id="combining-commits-by-squashing">Combining commits by squashing&lt;/h2>
+&lt;ol>
+&lt;li>Determine what commits you want to squash by running &lt;code>git log --oneline&lt;/code> and find the hash of the oldest commit you want to squash&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fish" data-lang="fish">&lt;span class="line">&lt;span class="cl">&lt;span class="nf">c3640e6&lt;/span> &lt;span class="o">(&lt;/span>&lt;span class="nf">HEAD&lt;/span> &lt;span class="na">-&amp;gt;&lt;/span> main&lt;span class="o">)&lt;/span> 7ce9769337
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nf">9f2e595&lt;/span> 3c8c13dfff &lt;span class="c"># let&amp;#39;s squash these two commits
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span>&lt;span class="nf">e1fce22&lt;/span> 600affbb4a &lt;span class="c"># let&amp;#39;s squash these two commits
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span>&lt;span class="nf">ed85848&lt;/span> &lt;span class="m">1186105185&lt;/span> &lt;span class="c"># into this commit
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span>&lt;span class="nf">64378f8&lt;/span> c8f8d0faf9
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nf">beeef8f&lt;/span> Initial commit
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ol start="2">
+&lt;li>go one past that commit and copy its hash&lt;/li>
+&lt;li>run &lt;code>git rebase --interactive 64378f8&lt;/code>&lt;/li>
+&lt;li>modify the &lt;code>git-rebase-todo&lt;/code> to include your squashes&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fish" data-lang="fish">&lt;span class="line">&lt;span class="cl">&lt;span class="nf">pick&lt;/span> ed85848 &lt;span class="m">1186105185&lt;/span> &lt;span class="c"># this is the commit we&amp;#39;re squashing into
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span>&lt;span class="nf">squash&lt;/span> e1fce22 600affbb4a &lt;span class="c"># these are the commits we&amp;#39;re squashing
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span>&lt;span class="nf">squash&lt;/span> 9f2e595 3c8c13dfff &lt;span class="c"># these are the commits we&amp;#39;re squashing
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span>&lt;span class="nf">pick&lt;/span> c3640e6 7ce9769337
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ol start="5">
+&lt;li>save and close the &lt;code>git-rebase-todo&lt;/code>&lt;/li>
+&lt;li>git will pause on the newly squashed commit and give you an opportunity to modify the commit message if desired&lt;/li>
+&lt;li>save and close the &lt;code>COMMIT_EDITMSG&lt;/code> file to finish the rebase&lt;/li>
+&lt;li>run &lt;code>git push --force-with-lease&lt;/code> if working with remote changes to overwrite history&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fish" data-lang="fish">&lt;span class="line">&lt;span class="cl">&lt;span class="nf">8188e83&lt;/span> &lt;span class="o">(&lt;/span>&lt;span class="nf">HEAD&lt;/span> &lt;span class="na">-&amp;gt;&lt;/span> main&lt;span class="o">)&lt;/span> 7ce9769337
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nf">1b4f942&lt;/span> &lt;span class="m">1186105185&lt;/span> &lt;span class="c"># the commit has a new SHA meaning the commits were squashed in!
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span>&lt;span class="nf">64378f8&lt;/span> c8f8d0faf9
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nf">beeef8f&lt;/span> Initial commit
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>If everything worked, the commit should be edited with a new SHA. You can run &lt;code>git log --oneline&lt;/code> to validate its modification.&lt;/p>
+&lt;p>If you enjoyed this article, have any questions, noticed something inaccurate, or you just want to say hi feel free to drop a comment below or send an email to &lt;a class="link" href="mailto:me@norling.io" >me@norling.io&lt;/a>&lt;/p></description></item><item><title>Editing Git Commit Messages</title><link>https://norling.io/edit-commit-messages/</link><pubDate>Sun, 26 Feb 2023 10:00:00 -0600</pubDate><guid>https://norling.io/edit-commit-messages/</guid><description>&lt;img src="https://norling.io/edit-commit-messages/stars-gdb805d2e7_1920.jpg" alt="Featured image of post Editing Git Commit Messages" />&lt;h2 id="summary">Summary&lt;/h2>
+&lt;p>You can edit your most recent commit message by running &lt;code>git commit --amend&lt;/code>.&lt;/p>
+&lt;p>If you&amp;rsquo;ve already pushed out your commit, you&amp;rsquo;ll have to tell the remote git repository that you intend to rewrite history. You can do this by running &lt;code>git push --force-with-lease&lt;/code> after amending your commit.&lt;/p>
+&lt;h2 id="editing-older-commit-messages">Editing older commit messages&lt;/h2>
+&lt;p>You can edit older commits with an interactive rebase. A rebase is a way to deconstruct and reconstruct older commits. You can modify things like the files changed in a commit, if the commit was signed, when the commit was created, who it was created by, and in our case you can edit commit messages.&lt;/p>
+&lt;p>The first step of a rebase is identifying the rebase&amp;rsquo;s span. Run &lt;code>git log --oneline&lt;/code> to get a top-down list of your latest commits. Find the commit you want to edit, then select the commit hash after it and run &lt;code>git rebase --interactive $HASH&lt;/code>&lt;/p>
+&lt;p>In the below example, If we want to edit the commit message &lt;code>baz [e9f16f3]&lt;/code>, we will want to run an interactive rebase on &lt;code>bar [aa7b423]&lt;/code>&lt;/p>
+&lt;p>&lt;img src="https://norling.io/edit-commit-messages/rebase.png"
+width="373"
+height="158"
+srcset="https://norling.io/edit-commit-messages/rebase_hu1f4f45ca0aea6edf864db14061657cc4_7006_480x0_resize_box_3.png 480w, https://norling.io/edit-commit-messages/rebase_hu1f4f45ca0aea6edf864db14061657cc4_7006_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="an example of how to select commits for an interactive rebase"
+class="gallery-image"
+data-flex-grow="236"
+data-flex-basis="566px"
+>&lt;/p>
+&lt;p>After you run this command, git will start a rebase and your configured git editor will give you a prompt asking how you want to proceed with the rebase. It&amp;rsquo;s worth reading this prompt entirely if you&amp;rsquo;ve never seen it before. I&amp;rsquo;ll summarize what&amp;rsquo;s needed for changing the commit message below this codeblock.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fish" data-lang="fish">&lt;span class="line">&lt;span class="cl">&lt;span class="nf">pick&lt;/span> e9f16f3 baz
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nf">pick&lt;/span> ff783de buz
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Rebase aa7b423..ff783de onto aa7b423 (2 commands)
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">#
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Commands:
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># p, pick &amp;lt;commit&amp;gt; = use commit
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># r, reword &amp;lt;commit&amp;gt; = use commit, but edit the commit message
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># e, edit &amp;lt;commit&amp;gt; = use commit, but stop for amending
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># s, squash &amp;lt;commit&amp;gt; = use commit, but meld into previous commit
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># f, fixup [-C | -c] &amp;lt;commit&amp;gt; = like &amp;#34;squash&amp;#34; but keep only the previous
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># commit&amp;#39;s log message, unless -C is used, in which case
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># keep only this commit&amp;#39;s message; -c is same as -C but
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># opens the editor
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># x, exec &amp;lt;command&amp;gt; = run command (the rest of the line) using shell
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># b, break = stop here (continue rebase later with &amp;#39;git rebase --continue&amp;#39;)
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># d, drop &amp;lt;commit&amp;gt; = remove commit
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># l, label &amp;lt;label&amp;gt; = label current HEAD with a name
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># t, reset &amp;lt;label&amp;gt; = reset HEAD to a label
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># m, merge [-C &amp;lt;commit&amp;gt; | -c &amp;lt;commit&amp;gt;] &amp;lt;label&amp;gt; [# &amp;lt;oneline&amp;gt;]
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># . create a merge commit using the original merge commit&amp;#39;s
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># . message (or the oneline, if no original merge commit was
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># . specified); use -c &amp;lt;commit&amp;gt; to reword the commit message
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">#
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># These lines can be re-ordered; they are executed from top to bottom.
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">#
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># If you remove a line here THAT COMMIT WILL BE LOST.
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">#
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># However, if you remove everything, the rebase will be aborted.
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">#
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>The file you&amp;rsquo;re editing is a &lt;code>git-rebase-todo&lt;/code> file. It&amp;rsquo;s used as a catalog of actions you intend to perform with each commit. It includes the action you want to do, the commit hash, and the commit message for easy identification. It&amp;rsquo;s also bottom-up instead of top-down (your newest commits are at the bottom).&lt;/p>
+&lt;p>&lt;code>pick&lt;/code> is the default action. Commits prefixed with &lt;code>pick&lt;/code> are left intact as they were before the rebase began. Since we want to edit the commit message &amp;ldquo;baz&amp;rdquo; The action we want to use is &lt;code>reword&lt;/code>. Edit your git-rebase-todo file and change the word &lt;code>pick&lt;/code> to &lt;code>reword&lt;/code> like so&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fish" data-lang="fish">&lt;span class="line">&lt;span class="cl">&lt;span class="nf">reword&lt;/span> e9f16f3 baz
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nf">pick&lt;/span> ff783de buz
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Rebase aa7b423..ff783de onto aa7b423 (2 commands)
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">#
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Commands:
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># p, pick &amp;lt;commit&amp;gt; = use commit
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># r, reword &amp;lt;commit&amp;gt; = use commit, but edit the commit message
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># e, edit &amp;lt;commit&amp;gt; = use commit, but stop for amending
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># s, squash &amp;lt;commit&amp;gt; = use commit, but meld into previous commit
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># f, fixup [-C | -c] &amp;lt;commit&amp;gt; = like &amp;#34;squash&amp;#34; but keep only the previous
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># commit&amp;#39;s log message, unless -C is used, in which case
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># keep only this commit&amp;#39;s message; -c is same as -C but
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># opens the editor
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># x, exec &amp;lt;command&amp;gt; = run command (the rest of the line) using shell
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># b, break = stop here (continue rebase later with &amp;#39;git rebase --continue&amp;#39;)
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># d, drop &amp;lt;commit&amp;gt; = remove commit
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># l, label &amp;lt;label&amp;gt; = label current HEAD with a name
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># t, reset &amp;lt;label&amp;gt; = reset HEAD to a label
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># m, merge [-C &amp;lt;commit&amp;gt; | -c &amp;lt;commit&amp;gt;] &amp;lt;label&amp;gt; [# &amp;lt;oneline&amp;gt;]
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># . create a merge commit using the original merge commit&amp;#39;s
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># . message (or the oneline, if no original merge commit was
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># . specified); use -c &amp;lt;commit&amp;gt; to reword the commit message
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">#
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># These lines can be re-ordered; they are executed from top to bottom.
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">#
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># If you remove a line here THAT COMMIT WILL BE LOST.
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">#
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># However, if you remove everything, the rebase will be aborted.
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">#
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>After you&amp;rsquo;ve made your changes, save the file and close it. Git will then prompt you to edit the commit message.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fish" data-lang="fish">&lt;span class="line">&lt;span class="cl">&lt;span class="nf">baz&lt;/span> &lt;span class="c"># change this line to anything but baz
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Please enter the commit message for your changes. Lines starting
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># with &amp;#39;#&amp;#39; will be ignored, and an empty message aborts the commit.
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">#
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Date: Sun Feb 26 00:19:24 2023 -0700
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">#
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># interactive rebase in progress; onto aa7b423
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Last command done (1 command done):
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># reword e9f16f3 baz
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Next command to do (1 remaining command):
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># pick ff783de buz
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># You are currently editing a commit while rebasing branch &amp;#39;git&amp;#39; on &amp;#39;aa7b423&amp;#39;.
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">#
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># Changes to be committed:
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># new file: baz
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">#
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>Once you&amp;rsquo;ve made your commit message changes, save the file and close it. Git will finalize the rebase, and you can run &lt;code>git log --oneline&lt;/code> to inspect the changes. To push your changes to the remote git repository, you&amp;rsquo;ll have to run &lt;code>git push --force-with-lease&lt;/code> here as well&lt;/p>
+&lt;p>&lt;img src="https://norling.io/edit-commit-messages/edited.png"
+width="373"
+height="158"
+srcset="https://norling.io/edit-commit-messages/edited_huf6671da211fd6c4fd902d6bcb5e8f2a8_4299_480x0_resize_box_3.png 480w, https://norling.io/edit-commit-messages/edited_huf6671da211fd6c4fd902d6bcb5e8f2a8_4299_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="the final message edited"
+class="gallery-image"
+data-flex-grow="236"
+data-flex-basis="566px"
+>&lt;/p>
+&lt;p>If you enjoyed this article, have any questions, noticed something inaccurate, or you just want to say hi feel free to drop a comment below or send an email to &lt;a class="link" href="mailto:me@norling.io" >me@norling.io&lt;/a>&lt;/p></description></item></channel></rss>

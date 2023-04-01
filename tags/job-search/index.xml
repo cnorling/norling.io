@@ -1,0 +1,747 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>job search on Cerise Norling</title><link>https://norling.io/tags/job-search/</link><description>Recent content in job search on Cerise Norling</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 18 Mar 2023 10:00:00 -0600</lastBuildDate><atom:link href="https://norling.io/tags/job-search/index.xml" rel="self" type="application/rss+xml"/><item><title>Writing my Resume in LaTeX</title><link>https://norling.io/latex-resume/</link><pubDate>Sat, 18 Mar 2023 10:00:00 -0600</pubDate><guid>https://norling.io/latex-resume/</guid><description>&lt;img src="https://norling.io/latex-resume/orion-nebula-gb8faf4a6f_1920.jpg" alt="Featured image of post Writing my Resume in LaTeX" />&lt;p>Writing LaTeX sucks, but the results are undeniably better than anything else. This article is a brief introduction into LaTeX, the basic prerequisites to writing documents, what the ecosystem is like, and what it was like writing my resume in LaTeX.&lt;/p>
+&lt;h2 id="dark-times-before-latex">Dark Times Before LaTeX&lt;/h2>
+&lt;p>I am very picky about resume formatting. If things aren&amp;rsquo;t perfectly aligned, it bothers me on a spiritual level. Before LaTeX, my solution for writing my resume was to make a table in Google Docs, organize the content into columns, and set the table line width to 0 so it would be transparent. This setup worked for quite some time, but it had drawbacks.&lt;/p>
+&lt;ul>
+&lt;li>Changing the column width for one cell had implications for other cells&lt;/li>
+&lt;li>The witdth of each cell was independent from other similar cells. This led to inconsistent spacing on the headers and sections&lt;/li>
+&lt;li>Content would shift between when the table was set to 1 or 0 line width&lt;/li>
+&lt;li>A lot of cells had to be merged together&lt;/li>
+&lt;li>Content had to be manually shuffled around for appropriate page balancing&lt;/li>
+&lt;/ul>
+&lt;p>&lt;img src="https://norling.io/latex-resume/old-resume.png"
+width="1225"
+height="888"
+srcset="https://norling.io/latex-resume/old-resume_hub344f9099b17fb396f2101a0f7a55a88_184676_480x0_resize_box_3.png 480w, https://norling.io/latex-resume/old-resume_hub344f9099b17fb396f2101a0f7a55a88_184676_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="My old resume with the table cell outline set to 1pt and 0pt width"
+class="gallery-image"
+data-flex-grow="137"
+data-flex-basis="331px"
+>&lt;/p>
+&lt;p>I felt really good about the results, but over time as I would make modifications the pain points started to wear on me. I asked my friend &lt;a class="link" href="https://github.com/Persistent13" target="_blank" rel="noopener"
+>Dakota Clark&lt;/a> about his resume, and he said he wrote his in LaTeX. I didn&amp;rsquo;t know much about LaTeX at the time. I knew it was frequently used for academic papers and was developed as an easier way to express mathematical equations.&lt;/p>
+&lt;p>My interest was piqued, and I decided to give it a shot. He gave me a copy of his resume, and I scanned over it to try and learn LaTeX. I also looked on Overleaf for public LaTeX resumes, but I didn&amp;rsquo;t see anything that really looked like what I wanted. I ended up writing my own from scratch!&lt;/p>
+&lt;h2 id="latex-concepts">LaTeX Concepts&lt;/h2>
+&lt;h3 id="environments">Environments&lt;/h3>
+&lt;p>When you declare things like font, size, color, and other text modifiers, you&amp;rsquo;re applying it to an environment. Think of an environment as something like a title, paragraph, footer, or table; A subsection of things that needs to be handled in a certain way. You can create your own environments, or you can use pre-made ones included in libraries. You can use a pre-made an environment like so&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-latex" data-lang="latex">&lt;span class="line">&lt;span class="cl">&lt;span class="k">\begin&lt;/span>&lt;span class="nb">{&lt;/span>environmentName&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> I&amp;#39;m in the environment!
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">\end&lt;/span>&lt;span class="nb">{&lt;/span>environmentName&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>Any text alterations you make inside that codeblock will only apply to that subset of text. You can declare your own custom environment like so&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-latex" data-lang="latex">&lt;span class="line">&lt;span class="cl">&lt;span class="k">\newenvironment&lt;/span>&lt;span class="nb">{&lt;/span>foo&lt;span class="nb">}{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c">% executes as the top portion of the environment
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span> &lt;span class="k">\color&lt;/span>&lt;span class="nb">{&lt;/span>Green&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\begin&lt;/span>&lt;span class="nb">{&lt;/span>list&lt;span class="nb">}{&lt;/span>x&lt;span class="nb">}{&lt;/span>&lt;span class="k">\raggedright&lt;/span>&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">}{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c">% executes as the bottom portion of the environment
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span> &lt;span class="k">\end&lt;/span>&lt;span class="nb">{&lt;/span>list&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>You can also have environments within environments&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-latex" data-lang="latex">&lt;span class="line">&lt;span class="cl">&lt;span class="k">\begin&lt;/span>&lt;span class="nb">{&lt;/span>environmentName&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> I&amp;#39;m in the environment!
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\begin&lt;/span>&lt;span class="nb">{&lt;/span>foo&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> I&amp;#39;m in the custom environment!
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\end&lt;/span>&lt;span class="nb">{&lt;/span>foo&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">\end&lt;/span>&lt;span class="nb">{&lt;/span>environmentName&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="packages">Packages&lt;/h3>
+&lt;p>TeXLive has a large number of default document classes and packages that are immediately available at your disposal, and you&amp;rsquo;ll have to use a lot of them. Set a page&amp;rsquo;s margins? Use &lt;code>geometry&lt;/code>. Merge cells in a table? Use &lt;code>multirow&lt;/code> or &lt;code>multicol&lt;/code>. Color something? Use &lt;code>xcolor&lt;/code>. Want to add a hyperlink? Use &lt;code>hyperref&lt;/code>.&lt;/p>
+&lt;p>Package discovery largely entails scrawling through StackOverflow or Overleaf for threads where people talk about how to do things. Overall, the ecosystem is well documented with most LaTeX libraries choosing to document their programs in PDFs on CTAN. You can find an example of the geometry package &lt;a class="link" href="https://ctan.org/pkg/geometry" target="_blank" rel="noopener"
+>here&lt;/a>.&lt;/p>
+&lt;p>You can import a package like so&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-latex" data-lang="latex">&lt;span class="line">&lt;span class="cl">&lt;span class="k">\usepackage&lt;/span>&lt;span class="nb">{&lt;/span>fontawesome&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="text-sizing">Text Sizing&lt;/h3>
+&lt;p>Because of how LaTeX handles text, you are limited to a small range of predetermined sizes that should meet most people&amp;rsquo;s needs. If you want to go larger or smaller, you&amp;rsquo;ll need to find a package with different supported sizes. Overleaf has some excellent docuemntation on font sizing you can read &lt;a class="link" href="https://www.overleaf.com/learn/latex/Font_sizes%2C_families%2C_and_styles" target="_blank" rel="noopener"
+>here&lt;/a>.&lt;/p>
+&lt;h3 id="fonts">Fonts&lt;/h3>
+&lt;p>Using a specific font isn&amp;rsquo;t as easy as you might think it would be. To use a font, you first have to identify what the font&amp;rsquo;s name as it&amp;rsquo;s defined in LaTeX. Once you have that name, you can apply it to an environment like so&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-latex" data-lang="latex">&lt;span class="line">&lt;span class="cl">&lt;span class="k">\begin&lt;/span>&lt;span class="nb">{&lt;/span>foo&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\fontfamily&lt;/span>&lt;span class="nb">{&lt;/span>&amp;lt;familyname&amp;gt;&lt;span class="nb">}&lt;/span>&lt;span class="k">\selectfont&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">\end&lt;/span>&lt;span class="nb">{&lt;/span>foo&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>Packages like fontenc make using fonts much easier. To look at fonts online, I&amp;rsquo;d recommend reading over the tug.org font catalogue &lt;a class="link" href="https://tug.org/FontCatalogue" target="_blank" rel="noopener"
+>https://tug.org/FontCatalogue&lt;/a>&lt;/p>
+&lt;h3 id="tolerance">Tolerance&lt;/h3>
+&lt;p>Whenever a line of text is justified, LaTeX must make a determination on how much whitespace spread between words can be tolerated without looking weird. It also decides just how much you can go past a margin before it puts the next word on a newline. Tolerance is an integer set between 0 and 10000. It&amp;rsquo;s easiest to understand in a picture&lt;/p>
+&lt;p>&lt;img src="https://norling.io/latex-resume/tolerance.png"
+width="1101"
+height="549"
+srcset="https://norling.io/latex-resume/tolerance_hud584df6b618d60d99949f82aea12c5fd_122223_480x0_resize_box_3.png 480w, https://norling.io/latex-resume/tolerance_hud584df6b618d60d99949f82aea12c5fd_122223_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="An image showcasing tolerance in LaTex"
+class="gallery-image"
+data-flex-grow="200"
+data-flex-basis="481px"
+>&lt;/p>
+&lt;h3 id="document-classes">Document Classes&lt;/h3>
+&lt;p>There are many different types of documents, and all those documents have things in common regardless of who wrote the document. Classes are a collection of common parameters and characteristics in a document that should apply to all documents of that type. TeXLive includes a few document classes that you can use like report, book, article, or letter. Article is a good class to use if you want a blank template to work with.&lt;/p>
+&lt;h3 id="functions-and-variables">Functions and Variables&lt;/h3>
+&lt;p>You declare a variable the same way you declare a function; Just create a function that returns the value you want assigned to the variable. You can then use that function wherever you want to.&lt;/p>
+&lt;h3 id="drawing-things">Drawing Things&lt;/h3>
+&lt;p>There are a million ways to do what you probably want, and 50% of those ways will probably involve using TikZ. TikZ allows you to draw pictures in LaTeX. The way you draw pictures might be appealing to mathemeticians, but it&amp;rsquo;s not a very enjoyable experience otherwise. There are a lot of packages that utilize TikZ to draw things for you in a more easy to write format.&lt;/p>
+&lt;p>I use a package called &lt;code>mdframed&lt;/code> that uses TikZ to outline text boxes around words and color them.&lt;/p>
+&lt;h2 id="writing-the-resume">Writing the Resume&lt;/h2>
+&lt;p>It can be very helpful to observe a project from creation to completion, so I&amp;rsquo;ve added a step by step example on github you can inspect to compare. A picture of the PDF output is included in the &lt;code>README.md&lt;/code> of the repository so this blogpost doesn&amp;rsquo;t get too long. You can find it &lt;a class="link" href="https://github.com/cnorling/resume-public/tree/main/example" target="_blank" rel="noopener"
+>here&lt;/a>&lt;/p>
+&lt;h3 id="file-setup">File Setup&lt;/h3>
+&lt;p>I start by defining a document and a document class. &lt;code>resume.cls&lt;/code> is the class and &lt;code>resume.tex&lt;/code> is the document. I put shared functions and formatting related things in &lt;code>resume.cls&lt;/code>. The content of the resume itself goes in &lt;code>resume.tex&lt;/code>. I add some content to &lt;code>resume.cls&lt;/code> to declare its parent document class, and link &lt;code>resume.tex&lt;/code> to that class. I also add a special environment named document to &lt;code>resume.tex&lt;/code> and put my name in it.&lt;/p>
+&lt;p>&lt;img src="https://norling.io/latex-resume/01_file-setup.png"
+width="645"
+height="912"
+srcset="https://norling.io/latex-resume/01_file-setup_hua8b2ff1cea4f7b648e6f0d9d68c039b4_5150_480x0_resize_box_3.png 480w, https://norling.io/latex-resume/01_file-setup_hua8b2ff1cea4f7b648e6f0d9d68c039b4_5150_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="general file setup"
+class="gallery-image"
+data-flex-grow="70"
+data-flex-basis="169px"
+>&lt;/p>
+&lt;h3 id="content">Content&lt;/h3>
+&lt;p>When working with a document that requires a lot of formatting, it can be helpful to have all your content already on the page so you can observe how the text will behave as you make changes. For this example, there&amp;rsquo;s a mix of real text and fake text. I&amp;rsquo;ll use the lipsum package and add it to &lt;code>resume.cls&lt;/code>. After it&amp;rsquo;s imported, I can use the &lt;code>\lipsum&lt;/code> function to get some example content.&lt;/p>
+&lt;p>Some of the content needs to be handled differently from the others though. I&amp;rsquo;ll declare a list environment for the qualifications and skills, then add some placeholder items to it.&lt;/p>
+&lt;p>&lt;img src="https://norling.io/latex-resume/02_content.png"
+width="642"
+height="908"
+srcset="https://norling.io/latex-resume/02_content_hu706936aa629809b124f64a43cd5f123f_83903_480x0_resize_box_3.png 480w, https://norling.io/latex-resume/02_content_hu706936aa629809b124f64a43cd5f123f_83903_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="adding some content"
+class="gallery-image"
+data-flex-grow="70"
+data-flex-basis="169px"
+>&lt;/p>
+&lt;h3 id="heading">Heading&lt;/h3>
+&lt;p>The first formatting thing I want to tackle is the page margins. I like my resume to have short vertical margins and wider horizontal margins. I can use the geometry package to setup page margins like so&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-latex" data-lang="latex">&lt;span class="line">&lt;span class="cl">&lt;span class="k">\usepackage&lt;/span>&lt;span class="nb">{&lt;/span>geometry&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">\geometry&lt;/span>&lt;span class="nb">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> a4paper,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> left=20mm,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> right=20mm,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> top=8mm,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bottom=8mm,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>The second formatting thing I want to tackle is the heading. Before I can do that, I need to add some variables so that I can use their content in &lt;code>resume.cls&lt;/code>. After adding them with &lt;code>\newcommand{\functionName}{string}&lt;/code> I can then call &lt;code>\functionName&lt;/code> to access their output.&lt;/p>
+&lt;p>My heading isn&amp;rsquo;t something that&amp;rsquo;s really going to change, so the strategy I use for my heading is a function that takes no parameters that pulls from the variables we just declared. I define a heading command and add the content we have in our header like so&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-latex" data-lang="latex">&lt;span class="line">&lt;span class="cl">&lt;span class="k">\newcommand&lt;/span>&lt;span class="nb">{&lt;/span>&lt;span class="k">\heading&lt;/span>&lt;span class="nb">}{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\name&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\github&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\website&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\email&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\phone&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\address&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>I want things roughly aligned with where they need to go, and I can do that with an environment called a tabular. Table declarations in LaTeX are very finnicky. They look best as code when their content is kept simple and straightforward. We pass a few parameters to indicate how many cells we want, how wide those cells should be, and how they should align. We&amp;rsquo;ll also want to use the package &lt;code>tabularx&lt;/code> since it fixes some issues that native LaTeX tabulars have. Here&amp;rsquo;s an example&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-latex" data-lang="latex">&lt;span class="line">&lt;span class="cl">&lt;span class="k">\begin&lt;/span>&lt;span class="nb">{&lt;/span>tabular&lt;span class="nb">}{&lt;/span>p&lt;span class="nb">{&lt;/span>200pt&lt;span class="nb">}&lt;/span> p&lt;span class="nb">{&lt;/span>120pt&lt;span class="nb">}&lt;/span> p&lt;span class="nb">{&lt;/span>120pt&lt;span class="nb">}}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c">% define the table content and separate cells with &amp;amp;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span> &lt;span class="c">% newlines in tables are declared with \\ at the end
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span> &lt;span class="k">\name&lt;/span> &lt;span class="nb">&amp;amp;&lt;/span> &lt;span class="k">\github&lt;/span> &lt;span class="nb">&amp;amp;&lt;/span> &lt;span class="k">\website&lt;/span> &lt;span class="k">\\&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">&amp;amp;&lt;/span> &lt;span class="k">\email&lt;/span> &lt;span class="nb">&amp;amp;&lt;/span> &lt;span class="k">\phone&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">\end&lt;/span>&lt;span class="nb">{&lt;/span>tabular&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>The document is already looking much better! The next thing I want to do is increase the size of my name and capitalize it as well as the sections. For that, we can use &lt;code>\MakeUppercase{}&lt;/code> and &lt;code>\huge&lt;/code>. I also want the things on the right side of the heading to align to the right side of the page; We can do that by applying the &lt;code>&amp;gt;{\raggedright\arraybackslash}&lt;/code> directive to the column in question.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-latex" data-lang="latex">&lt;span class="line">&lt;span class="cl">&lt;span class="k">\newcommand&lt;/span>&lt;span class="nb">{&lt;/span>&lt;span class="k">\heading&lt;/span>&lt;span class="nb">}{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\begin&lt;/span>&lt;span class="nb">{&lt;/span>tabular&lt;span class="nb">}{&lt;/span>p&lt;span class="nb">{&lt;/span>200pt&lt;span class="nb">}&lt;/span> p&lt;span class="nb">{&lt;/span>120pt&lt;span class="nb">}&lt;/span> &amp;gt;&lt;span class="nb">{&lt;/span>&lt;span class="k">\RaggedLeft&lt;/span>&lt;span class="nb">}&lt;/span>p&lt;span class="nb">{&lt;/span>120pt&lt;span class="nb">}}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\MakeUppercase&lt;/span>&lt;span class="nb">{&lt;/span>&lt;span class="k">\huge\name&lt;/span>&lt;span class="nb">}&lt;/span> &lt;span class="nb">&amp;amp;&lt;/span> &lt;span class="k">\github&lt;/span> &lt;span class="nb">&amp;amp;&lt;/span> &lt;span class="k">\website&lt;/span> &lt;span class="k">\\&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">&amp;amp;&lt;/span> &lt;span class="k">\email&lt;/span> &lt;span class="nb">&amp;amp;&lt;/span> &lt;span class="k">\phone&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\end&lt;/span>&lt;span class="nb">{&lt;/span>tabular&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;img src="https://norling.io/latex-resume/03_weird-spacing.png"
+width="624"
+height="58"
+srcset="https://norling.io/latex-resume/03_weird-spacing_hub312725c3a2f848c5bccfe4c94ee9a65_7061_480x0_resize_box_3.png 480w, https://norling.io/latex-resume/03_weird-spacing_hub312725c3a2f848c5bccfe4c94ee9a65_7061_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="Heading without any cells merged"
+class="gallery-image"
+data-flex-grow="1075"
+data-flex-basis="2582px"
+>&lt;/p>
+&lt;p>My name looks bigger, but now the table&amp;rsquo;s content isn&amp;rsquo;t aligned. To fix this, I merge the empty cell below my name with the &lt;code>multirow&lt;/code> package. It&amp;rsquo;s at this point that I give up keeping rough cell alignment since the cast name is so long.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-latex" data-lang="latex">&lt;span class="line">&lt;span class="cl">&lt;span class="k">\newcommand&lt;/span>&lt;span class="nb">{&lt;/span>&lt;span class="k">\heading&lt;/span>&lt;span class="nb">}{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\begin&lt;/span>&lt;span class="nb">{&lt;/span>tabular&lt;span class="nb">}{&lt;/span>p&lt;span class="nb">{&lt;/span>200pt&lt;span class="nb">}&lt;/span> p&lt;span class="nb">{&lt;/span>120pt&lt;span class="nb">}&lt;/span> &amp;gt;&lt;span class="nb">{&lt;/span>&lt;span class="k">\RaggedLeft&lt;/span>&lt;span class="nb">}&lt;/span>p&lt;span class="nb">{&lt;/span>120pt&lt;span class="nb">}}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\multirow&lt;/span>&lt;span class="nb">{&lt;/span>2&lt;span class="nb">}{&lt;/span>200pt&lt;span class="nb">}{&lt;/span>&lt;span class="k">\MakeUppercase&lt;/span>&lt;span class="nb">{&lt;/span>&lt;span class="k">\huge\name&lt;/span>&lt;span class="nb">}}&lt;/span> &lt;span class="nb">&amp;amp;&lt;/span> &lt;span class="k">\github&lt;/span> &lt;span class="nb">&amp;amp;&lt;/span> &lt;span class="k">\website&lt;/span> &lt;span class="k">\\&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">&amp;amp;&lt;/span> &lt;span class="k">\email&lt;/span> &lt;span class="nb">&amp;amp;&lt;/span> &lt;span class="k">\phone&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\end&lt;/span>&lt;span class="nb">{&lt;/span>tabular&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;img src="https://norling.io/latex-resume/03_better-spacing.png"
+width="623"
+height="43"
+srcset="https://norling.io/latex-resume/03_better-spacing_hu042a27ee156c7244a7a19e8fde3e74b7_6910_480x0_resize_box_3.png 480w, https://norling.io/latex-resume/03_better-spacing_hu042a27ee156c7244a7a19e8fde3e74b7_6910_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="Heading with the two cells merged"
+class="gallery-image"
+data-flex-grow="1448"
+data-flex-basis="3477px"
+>&lt;/p>
+&lt;p>Okay my name is vertically aligned now, but that line to print my name is absurdly long and makes the table illegible from a code standpoint. I&amp;rsquo;m going to obfuscate how my name&amp;rsquo;s casted with another command.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-latex" data-lang="latex">&lt;span class="line">&lt;span class="cl">&lt;span class="k">\newcommand&lt;/span>&lt;span class="nb">{&lt;/span>&lt;span class="k">\heading&lt;/span>&lt;span class="nb">}{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\begin&lt;/span>&lt;span class="nb">{&lt;/span>tabular&lt;span class="nb">}{&lt;/span>p&lt;span class="nb">{&lt;/span>200pt&lt;span class="nb">}&lt;/span> p&lt;span class="nb">{&lt;/span>120pt&lt;span class="nb">}&lt;/span> &amp;gt;&lt;span class="nb">{&lt;/span>&lt;span class="k">\RaggedLeft&lt;/span>&lt;span class="nb">}&lt;/span>p&lt;span class="nb">{&lt;/span>120pt&lt;span class="nb">}}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\multirow&lt;/span>&lt;span class="nb">{&lt;/span>2&lt;span class="nb">}{&lt;/span>200pt&lt;span class="nb">}{&lt;/span>&lt;span class="k">\printName&lt;/span>&lt;span class="nb">}&lt;/span> &lt;span class="nb">&amp;amp;&lt;/span> &lt;span class="k">\github&lt;/span> &lt;span class="nb">&amp;amp;&lt;/span> &lt;span class="k">\website&lt;/span> &lt;span class="k">\\&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">&amp;amp;&lt;/span> &lt;span class="k">\email&lt;/span> &lt;span class="nb">&amp;amp;&lt;/span> &lt;span class="k">\phone&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\end&lt;/span>&lt;span class="nb">{&lt;/span>tabular&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">\newcommand&lt;/span>&lt;span class="nb">{&lt;/span>&lt;span class="k">\printName&lt;/span>&lt;span class="nb">}{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\MakeUppercase&lt;/span>&lt;span class="nb">{&lt;/span>&lt;span class="k">\huge\name&lt;/span>&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>Definitely better than before, but there&amp;rsquo;s room for improvement.&lt;/p>
+&lt;p>&lt;img src="https://norling.io/latex-resume/03_heading.png"
+width="591"
+height="840"
+srcset="https://norling.io/latex-resume/03_heading_huf3ab08dec794e66a46c4bad27211cd64_71346_480x0_resize_box_3.png 480w, https://norling.io/latex-resume/03_heading_huf3ab08dec794e66a46c4bad27211cd64_71346_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+class="gallery-image"
+data-flex-grow="70"
+data-flex-basis="168px"
+>&lt;/p>
+&lt;h3 id="formatting">Formatting&lt;/h3>
+&lt;h4 id="paragraph-indentation">Paragraph Indentation&lt;/h4>
+&lt;p>To fix the paragraph indentation on this resume, I use the &lt;code>parskip&lt;/code> package. I don&amp;rsquo;t have the capability to fix the heading indentation at this time, but it won&amp;rsquo;t be a problem with the styling we&amp;rsquo;ll do later.&lt;/p>
+&lt;h4 id="hyphenated-linebreaks">Hyphenated Linebreaks&lt;/h4>
+&lt;p>Some of the words are spread across multiple lines, so I&amp;rsquo;ll want to configure the page&amp;rsquo;s tolerance and disable hyphenation with the &lt;code>hyphenat&lt;/code> package.&lt;/p>
+&lt;h4 id="bullet-points">Bullet Points&lt;/h4>
+&lt;p>I&amp;rsquo;d prefer to use a nicer icon than just an asterisk. The &lt;code>favicon&lt;/code> LaTeX library has a lot of good icons to use. I like &lt;code>\faCheckSquare&lt;/code>. I want the bullet points to be in-line with the left side of the page, so I&amp;rsquo;ll have to edit the list&amp;rsquo;s parameters. I also want to change the separation between items to be tighter like so&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-latex" data-lang="latex">&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\begin&lt;/span>&lt;span class="nb">{&lt;/span>list&lt;span class="nb">}{&lt;/span>&lt;span class="k">\faCheckSquare&lt;/span>&lt;span class="nb">}{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\setlength&lt;/span>&lt;span class="nb">{&lt;/span>&lt;span class="k">\leftmargin&lt;/span>&lt;span class="nb">}{&lt;/span>15pt&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\setlength&lt;/span>&lt;span class="nb">{&lt;/span>&lt;span class="k">\itemsep&lt;/span>&lt;span class="nb">}{&lt;/span>0pt&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\itemsep&lt;/span> -0.5em &lt;span class="k">\vspace&lt;/span>&lt;span class="nb">{&lt;/span>-0.5em&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\raggedright&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\item&lt;/span> foo
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\item&lt;/span> bar
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\item&lt;/span> baz
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\item&lt;/span> biz
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\item&lt;/span> boz
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\item&lt;/span> buz
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\item&lt;/span> bez
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\end&lt;/span>&lt;span class="nb">{&lt;/span>list&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h4 id="multiple-column-list">Multiple Column List&lt;/h4>
+&lt;p>I&amp;rsquo;d like the skills and tools to be spread out across the page. A package called &lt;code>multicol&lt;/code> lets me spread a single list across multiple columns like so&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-latex" data-lang="latex">&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\begin&lt;/span>&lt;span class="nb">{&lt;/span>multicols&lt;span class="nb">}{&lt;/span>4&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\begin&lt;/span>&lt;span class="nb">{&lt;/span>list&lt;span class="nb">}{&lt;/span>&lt;span class="k">\faCheckSquare&lt;/span>&lt;span class="nb">}{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\setlength&lt;/span>&lt;span class="nb">{&lt;/span>&lt;span class="k">\leftmargin&lt;/span>&lt;span class="nb">}{&lt;/span>15pt&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\setlength&lt;/span>&lt;span class="nb">{&lt;/span>&lt;span class="k">\itemsep&lt;/span>&lt;span class="nb">}{&lt;/span>0pt&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\itemsep&lt;/span> -0.5em &lt;span class="k">\vspace&lt;/span>&lt;span class="nb">{&lt;/span>-0.5em&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\raggedright&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\item&lt;/span> foo
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\item&lt;/span> bar
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\item&lt;/span> baz
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\item&lt;/span> biz
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\item&lt;/span> boz
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\item&lt;/span> buz
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\item&lt;/span> bez
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\item&lt;/span> fiz
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\item&lt;/span> faz
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\item&lt;/span> fox
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\item&lt;/span> foz
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\item&lt;/span> fyz
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\end&lt;/span>&lt;span class="nb">{&lt;/span>list&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\end&lt;/span>&lt;span class="nb">{&lt;/span>multicols&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>Some of the formatting has leaked into the &lt;code>resume.tex&lt;/code> file with how things are setup now. To fix this, I&amp;rsquo;ll create a custom environment that declares the list as well as a few other options. The skills environment will have one parameter that we declare with &lt;code>\newenvironment{envname}[3]{}{}&lt;/code> where the integer is how many arguments we want the function to have. Values from those parameters are used by referencing their integer in the position prefixed by a pound like this: &lt;code>#1&lt;/code>&lt;/p>
+&lt;p>When you use the environment, you add a set of curly brackets after the environment&amp;rsquo;s name with your input like this: &lt;code>\begin{envname}{foo}{bar}{baz}&lt;/code>. Our use-case is much simpler though since we only have one parameter.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-latex" data-lang="latex">&lt;span class="line">&lt;span class="cl">&lt;span class="c">% resume.cls
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span>&lt;span class="k">\newenvironment&lt;/span>&lt;span class="nb">{&lt;/span>skills&lt;span class="nb">}&lt;/span>[1]&lt;span class="nb">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\begin&lt;/span>&lt;span class="nb">{&lt;/span>multicols&lt;span class="nb">}{&lt;/span>#1&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\begin&lt;/span>&lt;span class="nb">{&lt;/span>list&lt;span class="nb">}{&lt;/span>*&lt;span class="nb">}{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\setlength&lt;/span>&lt;span class="nb">{&lt;/span>&lt;span class="k">\leftmargin&lt;/span>&lt;span class="nb">}{&lt;/span>15pt&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\setlength&lt;/span>&lt;span class="nb">{&lt;/span>&lt;span class="k">\itemsep&lt;/span>&lt;span class="nb">}{&lt;/span>0pt&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\itemsep&lt;/span> -0.5em &lt;span class="k">\vspace&lt;/span>&lt;span class="nb">{&lt;/span>-0.5em&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\raggedright&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">}{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\end&lt;/span>&lt;span class="nb">{&lt;/span>list&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\end&lt;/span>&lt;span class="nb">{&lt;/span>multicols&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">% resume.tex
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span>&lt;span class="k">\begin&lt;/span>&lt;span class="nb">{&lt;/span>skills&lt;span class="nb">}{&lt;/span>4&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\item&lt;/span> foo
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\item&lt;/span> bar
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\item&lt;/span> baz
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\item&lt;/span> biz
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\item&lt;/span> boz
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\item&lt;/span> buz
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\item&lt;/span> bez
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\item&lt;/span> fiz
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\item&lt;/span> faz
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\item&lt;/span> fox
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\item&lt;/span> foz
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\item&lt;/span> fyz
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">\end&lt;/span>&lt;span class="nb">{&lt;/span>skills&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h4 id="vertical-padding">Vertical Padding&lt;/h4>
+&lt;p>At this point, the spacing between the list we have for qualifications vs skills and tools is different, so I&amp;rsquo;ll have to tweak the qualifications environment a bit with some padding to even things out. I can do this with the &lt;code>\vspace*{8pt}&lt;/code> command.&lt;/p>
+&lt;p>What&amp;rsquo;s that asterisk mean? Well, to be honest a lot of the default behaviors of LaTeX are inconsistent and sometimes undesirable. Rather than update the package, newer packages by maintainers are added to TeXlive to fix these issues. But now there are package naming conflicts. The solution is to change the case sensitivity of the package or suffix an asterisk at the end. &lt;code>\vspace&lt;/code> and &lt;code>\vspace*&lt;/code> are both different packages with different behaviors. If you see a package with an asterisk, you should use that over the default package because it&amp;rsquo;s more likely up-to-date.&lt;/p>
+&lt;h4 id="font">Font&lt;/h4>
+&lt;p>We&amp;rsquo;ll want to set the font too. I like &lt;code>comfortaa&lt;/code>, so I&amp;rsquo;ll set it globally with the &lt;code>comfortaa&lt;/code> package.&lt;/p>
+&lt;h4 id="text-color">Text Color&lt;/h4>
+&lt;p>Black on white is very harsh on the eyes, so changing the text color will help. I can do that by configuring a default color in the class like this &lt;code>\color{darkgray}&lt;/code>.&lt;/p>
+&lt;p>I&amp;rsquo;d like to also organize the job content similar to how the header is handled. I&amp;rsquo;ll create a new environment that takes 3 parameters with a 2x2 table. To format the text, I&amp;rsquo;ll bold the job and date, italicize the title, and capitalize the date. With this table, I&amp;rsquo;ll need some more advanced formatting utilities so I&amp;rsquo;ll use a &lt;code>tabularx&lt;/code> instead.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-latex" data-lang="latex">&lt;span class="line">&lt;span class="cl">&lt;span class="c">% resume.cls
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span>&lt;span class="k">\newenvironment&lt;/span>&lt;span class="nb">{&lt;/span>job&lt;span class="nb">}&lt;/span>[3]&lt;span class="nb">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\vspace&lt;/span>&lt;span class="nb">{&lt;/span>5pt&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\begin&lt;/span>&lt;span class="nb">{&lt;/span>tabularx&lt;span class="nb">}{&lt;/span>1&lt;span class="k">\textwidth&lt;/span>&lt;span class="nb">}&lt;/span> &lt;span class="nb">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> @&lt;span class="nb">{}&lt;/span>&amp;gt;&lt;span class="nb">{&lt;/span>&lt;span class="k">\hsize&lt;/span>=1&lt;span class="k">\hsize\linewidth&lt;/span>=&lt;span class="k">\hsize\raggedright\arraybackslash&lt;/span>&lt;span class="nb">}&lt;/span>X@&lt;span class="nb">{}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> @&lt;span class="nb">{}&lt;/span>&amp;gt;&lt;span class="nb">{&lt;/span>&lt;span class="k">\hsize&lt;/span>=1&lt;span class="k">\hsize\linewidth&lt;/span>=&lt;span class="k">\hsize\raggedleft\arraybackslash&lt;/span>&lt;span class="nb">}&lt;/span>X@&lt;span class="nb">{}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\textbf&lt;/span>&lt;span class="nb">{&lt;/span>&lt;span class="k">\large&lt;/span> #1&lt;span class="nb">}&lt;/span> &lt;span class="nb">&amp;amp;&lt;/span> &lt;span class="k">\MakeUppercase&lt;/span>&lt;span class="nb">{&lt;/span>&lt;span class="k">\textbf&lt;/span>&lt;span class="nb">{&lt;/span>#3&lt;span class="nb">}}&lt;/span> &lt;span class="k">\\&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\textit&lt;/span>&lt;span class="nb">{&lt;/span>#2&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\end&lt;/span>&lt;span class="nb">{&lt;/span>tabularx&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">}{}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">% resume.tex
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c">&lt;/span>&lt;span class="k">\begin&lt;/span>&lt;span class="nb">{&lt;/span>job&lt;span class="nb">}{&lt;/span>job name&lt;span class="nb">}{&lt;/span>job title&lt;span class="nb">}{&lt;/span>12-2021 - present&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">\end&lt;/span>&lt;span class="nb">{&lt;/span>job&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;img src="https://norling.io/latex-resume/04_formatting.png"
+width="643"
+height="913"
+srcset="https://norling.io/latex-resume/04_formatting_hu5a6dbd0cb12451978251e8aadeeed6d9_98753_480x0_resize_box_3.png 480w, https://norling.io/latex-resume/04_formatting_hu5a6dbd0cb12451978251e8aadeeed6d9_98753_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="Now we&amp;rsquo;re cooking"
+class="gallery-image"
+data-flex-grow="70"
+data-flex-basis="169px"
+>&lt;/p>
+&lt;h3 id="styling">Styling&lt;/h3>
+&lt;p>Now I want to add some style to the page to make it less plain.&lt;/p>
+&lt;h4 id="favicons-and-hyperlinks">Favicons and Hyperlinks&lt;/h4>
+&lt;p>With the favicon package I imported earlier, I can add some cool icons to the header. I&amp;rsquo;ll need to expand the table width and add a few more helper functions and packages to setup hyperlinks and size the icons; The &lt;code>hyperref&lt;/code> package lets me setup hyperlinks. I&amp;rsquo;ll also configure a color variable globally and use that later on.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-latex" data-lang="latex">&lt;span class="line">&lt;span class="cl">&lt;span class="k">\newcommand&lt;/span>&lt;span class="nb">{&lt;/span>&lt;span class="k">\heading&lt;/span>&lt;span class="nb">}{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\begin&lt;/span>&lt;span class="nb">{&lt;/span>tabular&lt;span class="nb">}{&lt;/span> p&lt;span class="nb">{&lt;/span>200pt&lt;span class="nb">}&lt;/span> &amp;gt;&lt;span class="nb">{&lt;/span>&lt;span class="k">\raggedleft\arraybackslash&lt;/span>&lt;span class="nb">}&lt;/span>p&lt;span class="nb">{&lt;/span>30pt&lt;span class="nb">}&lt;/span> p&lt;span class="nb">{&lt;/span>90pt&lt;span class="nb">}&lt;/span>&amp;gt;&lt;span class="nb">{&lt;/span>&lt;span class="k">\raggedleft\arraybackslash&lt;/span>&lt;span class="nb">}&lt;/span> p&lt;span class="nb">{&lt;/span>90pt&lt;span class="nb">}&lt;/span> &amp;gt;&lt;span class="nb">{&lt;/span>&lt;span class="k">\raggedright\arraybackslash&lt;/span>&lt;span class="nb">}&lt;/span> p&lt;span class="nb">{&lt;/span>30pt&lt;span class="nb">}&lt;/span> &lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\multirow&lt;/span>&lt;span class="nb">{&lt;/span>2&lt;span class="nb">}{&lt;/span>200pt&lt;span class="nb">}{&lt;/span>&lt;span class="k">\printName&lt;/span>&lt;span class="nb">}&lt;/span> &lt;span class="nb">&amp;amp;&lt;/span> &lt;span class="k">\icogithub&lt;/span> &lt;span class="nb">&amp;amp;&lt;/span> &lt;span class="k">\github&lt;/span> &lt;span class="nb">&amp;amp;&lt;/span> &lt;span class="k">\website&lt;/span> &lt;span class="nb">&amp;amp;&lt;/span> &lt;span class="k">\icowebsite&lt;/span> &lt;span class="k">\\&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">&amp;amp;&lt;/span> &lt;span class="k">\icophone&lt;/span> &lt;span class="nb">&amp;amp;&lt;/span> &lt;span class="k">\phone&lt;/span> &lt;span class="nb">&amp;amp;&lt;/span> &lt;span class="k">\email&lt;/span> &lt;span class="nb">&amp;amp;&lt;/span> &lt;span class="k">\icomail&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\end&lt;/span>&lt;span class="nb">{&lt;/span>tabular&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">\newcommand&lt;/span>&lt;span class="nb">{&lt;/span>&lt;span class="k">\printName&lt;/span>&lt;span class="nb">}{&lt;/span>&lt;span class="k">\MakeUppercase&lt;/span>&lt;span class="nb">{&lt;/span>&lt;span class="k">\huge&lt;/span> &lt;span class="k">\name&lt;/span>&lt;span class="nb">}}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">\newcommand&lt;/span>&lt;span class="nb">{&lt;/span>&lt;span class="k">\ico&lt;/span>&lt;span class="nb">}&lt;/span>[2]&lt;span class="nb">{{&lt;/span>&lt;span class="k">\large\href&lt;/span>&lt;span class="nb">{&lt;/span>#1&lt;span class="nb">}{&lt;/span>#2&lt;span class="nb">}}}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">\newcommand&lt;/span>&lt;span class="nb">{&lt;/span>&lt;span class="k">\icogithub&lt;/span>&lt;span class="nb">}{&lt;/span>&lt;span class="k">\ico&lt;/span>&lt;span class="nb">{&lt;/span>https://github.com/&lt;span class="k">\github&lt;/span>&lt;span class="nb">}{&lt;/span>&lt;span class="k">\faGithub&lt;/span>&lt;span class="nb">}}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">\newcommand&lt;/span>&lt;span class="nb">{&lt;/span>&lt;span class="k">\icomail&lt;/span>&lt;span class="nb">}{&lt;/span>&lt;span class="k">\ico&lt;/span>&lt;span class="nb">{&lt;/span>mailto:&lt;span class="k">\email&lt;/span>&lt;span class="nb">}{&lt;/span>&lt;span class="k">\faEnvelope&lt;/span>&lt;span class="nb">}}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">\newcommand&lt;/span>&lt;span class="nb">{&lt;/span>&lt;span class="k">\icophone&lt;/span>&lt;span class="nb">}{&lt;/span>&lt;span class="k">\ico&lt;/span>&lt;span class="nb">{&lt;/span>tel:&lt;span class="k">\phone&lt;/span>&lt;span class="nb">}{&lt;/span>&lt;span class="k">\faPhone&lt;/span>&lt;span class="nb">}}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">\newcommand&lt;/span>&lt;span class="nb">{&lt;/span>&lt;span class="k">\icowebsite&lt;/span>&lt;span class="nb">}{&lt;/span>&lt;span class="k">\ico&lt;/span>&lt;span class="nb">{&lt;/span>https://&lt;span class="k">\website&lt;/span>&lt;span class="nb">}{&lt;/span>&lt;span class="k">\faGlobe&lt;/span>&lt;span class="nb">}}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">\newcommand&lt;/span>&lt;span class="nb">{&lt;/span>&lt;span class="k">\setcolor&lt;/span>&lt;span class="nb">}{&lt;/span>&lt;span class="k">\color&lt;/span>&lt;span class="nb">{&lt;/span>&lt;span class="k">\colour&lt;/span>&lt;span class="nb">}}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h4 id="text-boxes">Text Boxes&lt;/h4>
+&lt;p>I found a package called &lt;code>mdframed&lt;/code> that lets me draw boxes around text. It works by allowing you to declare a type of environment that&amp;rsquo;s specific to the &lt;code>mdframed&lt;/code> package. I declare a positive and negative variant for some variety on the page like so&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-latex" data-lang="latex">&lt;span class="line">&lt;span class="cl">&lt;span class="k">\newmdenv&lt;/span>[
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> middlelinewidth=0pt,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> backgroundcolor=&lt;span class="k">\colour&lt;/span>,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> roundcorner=2pt,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> fontcolor=White,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> innerleftmargin=5pt,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> innertopmargin=-8pt,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> userdefinedwidth=150pt
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">]&lt;span class="nb">{&lt;/span>infobox&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">\newmdenv&lt;/span>[
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> userdefinedwidth=&lt;span class="k">\textwidth&lt;/span>,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> linecolor=&lt;span class="k">\colour&lt;/span>,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> linewidth=1pt,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> backgroundcolor=White,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> roundcorner=2pt,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> fontcolor=&lt;span class="k">\colour&lt;/span>,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> innerleftmargin=5pt,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> innerbottommargin=2pt
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">]&lt;span class="nb">{&lt;/span>infoboxinvert&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>I use the infobox like I would any ordinary environment. For the header, I&amp;rsquo;m going to override a few settings on the infobox. I&amp;rsquo;ll also tweak the name to be splayed across two lines by adjusting the multirow cell width like so&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-latex" data-lang="latex">&lt;span class="line">&lt;span class="cl">&lt;span class="k">\newcommand&lt;/span>&lt;span class="nb">{&lt;/span>&lt;span class="k">\heading&lt;/span>&lt;span class="nb">}{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\begin&lt;/span>&lt;span class="nb">{&lt;/span>infobox&lt;span class="nb">}&lt;/span>[
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> innertopmargin=4pt,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> innerbottommargin=25pt,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> innerleftmargin=0pt
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ]
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\begin&lt;/span>&lt;span class="nb">{&lt;/span>tabular&lt;span class="nb">}{&lt;/span> p&lt;span class="nb">{&lt;/span>200pt&lt;span class="nb">}&lt;/span> &amp;gt;&lt;span class="nb">{&lt;/span>&lt;span class="k">\raggedleft&lt;/span>&lt;span class="nb">}&lt;/span>p&lt;span class="nb">{&lt;/span>30pt&lt;span class="nb">}&lt;/span> p&lt;span class="nb">{&lt;/span>90pt&lt;span class="nb">}&lt;/span>&amp;gt;&lt;span class="nb">{&lt;/span>&lt;span class="k">\raggedleft&lt;/span>&lt;span class="nb">}&lt;/span> p&lt;span class="nb">{&lt;/span>90pt&lt;span class="nb">}&lt;/span> &amp;gt;&lt;span class="nb">{&lt;/span>&lt;span class="k">\raggedright\arraybackslash&lt;/span>&lt;span class="nb">}&lt;/span> p&lt;span class="nb">{&lt;/span>30pt&lt;span class="nb">}&lt;/span> &lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\multirow&lt;/span>&lt;span class="nb">{&lt;/span>2&lt;span class="nb">}{&lt;/span>150pt&lt;span class="nb">}{&lt;/span>&lt;span class="k">\printName&lt;/span>&lt;span class="nb">}&lt;/span> &lt;span class="nb">&amp;amp;&lt;/span> &lt;span class="k">\icogithub&lt;/span> &lt;span class="nb">&amp;amp;&lt;/span> &lt;span class="k">\github&lt;/span> &lt;span class="nb">&amp;amp;&lt;/span> &lt;span class="k">\website&lt;/span> &lt;span class="nb">&amp;amp;&lt;/span> &lt;span class="k">\icowebsite&lt;/span> &lt;span class="k">\\&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">&amp;amp;&lt;/span> &lt;span class="k">\icophone&lt;/span> &lt;span class="nb">&amp;amp;&lt;/span> &lt;span class="k">\phone&lt;/span> &lt;span class="nb">&amp;amp;&lt;/span> &lt;span class="k">\email&lt;/span> &lt;span class="nb">&amp;amp;&lt;/span> &lt;span class="k">\icomail&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\end&lt;/span>&lt;span class="nb">{&lt;/span>tabular&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\end&lt;/span>&lt;span class="nb">{&lt;/span>infobox&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>Now I&amp;rsquo;ll wrap the job environment in the inverted infobox.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-latex" data-lang="latex">&lt;span class="line">&lt;span class="cl">&lt;span class="k">\newenvironment&lt;/span>&lt;span class="nb">{&lt;/span>job&lt;span class="nb">}&lt;/span>[3]&lt;span class="nb">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\vspace&lt;/span>&lt;span class="nb">{&lt;/span>5pt&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\begin&lt;/span>&lt;span class="nb">{&lt;/span>infoboxinvert&lt;span class="nb">}&lt;/span>[]
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\begin&lt;/span>&lt;span class="nb">{&lt;/span>tabularx&lt;span class="nb">}{&lt;/span>1&lt;span class="k">\textwidth&lt;/span>&lt;span class="nb">}&lt;/span> &lt;span class="nb">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> @&lt;span class="nb">{}&lt;/span>&amp;gt;&lt;span class="nb">{&lt;/span>&lt;span class="k">\hsize&lt;/span>=1&lt;span class="k">\hsize\linewidth&lt;/span>=&lt;span class="k">\hsize\raggedright\arraybackslash&lt;/span>&lt;span class="nb">}&lt;/span>X@&lt;span class="nb">{}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> @&lt;span class="nb">{}&lt;/span>&amp;gt;&lt;span class="nb">{&lt;/span>&lt;span class="k">\hsize&lt;/span>=1&lt;span class="k">\hsize\linewidth&lt;/span>=&lt;span class="k">\hsize\raggedleft\arraybackslash&lt;/span>&lt;span class="nb">}&lt;/span>X@&lt;span class="nb">{}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\textbf&lt;/span>&lt;span class="nb">{&lt;/span>&lt;span class="k">\large&lt;/span> #1&lt;span class="nb">}&lt;/span> &lt;span class="nb">&amp;amp;&lt;/span> &lt;span class="k">\MakeUppercase&lt;/span>&lt;span class="nb">{&lt;/span>&lt;span class="k">\textbf&lt;/span>&lt;span class="nb">{&lt;/span>#3&lt;span class="nb">}}&lt;/span> &lt;span class="k">\\&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\textit&lt;/span>&lt;span class="nb">{&lt;/span>#2&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\end&lt;/span>&lt;span class="nb">{&lt;/span>tabularx&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\end&lt;/span>&lt;span class="nb">{&lt;/span>infoboxinvert&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">}{}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>For the sections, I&amp;rsquo;ll declare a function that uses the infobox environment and accepts a parameter for the section name. I&amp;rsquo;ll configure the width of the boxes to be static so they all align down the page.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-latex" data-lang="latex">&lt;span class="line">&lt;span class="cl">&lt;span class="k">\newcommand&lt;/span>&lt;span class="nb">{&lt;/span>&lt;span class="k">\sector&lt;/span>&lt;span class="nb">}&lt;/span>[1]&lt;span class="nb">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\begin&lt;/span>&lt;span class="nb">{&lt;/span>infobox&lt;span class="nb">}&lt;/span>[userdefinedwidth=143pt]
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\section*&lt;/span>&lt;span class="nb">{&lt;/span>&lt;span class="k">\MakeUppercase&lt;/span>&lt;span class="nb">{&lt;/span>#1&lt;span class="nb">}}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\end&lt;/span>&lt;span class="nb">{&lt;/span>infobox&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>I&amp;rsquo;ll set the color of the checkboxes as well with the &lt;code>\setcolor&lt;/code> command I defined earlier.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-latex" data-lang="latex">&lt;span class="line">&lt;span class="cl">&lt;span class="k">\newenvironment&lt;/span>&lt;span class="nb">{&lt;/span>skills&lt;span class="nb">}&lt;/span>[1]&lt;span class="nb">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\vspace*&lt;/span>&lt;span class="nb">{&lt;/span>-5pt&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\begin&lt;/span>&lt;span class="nb">{&lt;/span>multicols&lt;span class="nb">}{&lt;/span>#1&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\begin&lt;/span>&lt;span class="nb">{&lt;/span>list&lt;span class="nb">}{&lt;/span>&lt;span class="k">\setcolor\faCheckSquare&lt;/span>&lt;span class="nb">}{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\setlength&lt;/span>&lt;span class="nb">{&lt;/span>&lt;span class="k">\leftmargin&lt;/span>&lt;span class="nb">}{&lt;/span>15pt&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\setlength&lt;/span>&lt;span class="nb">{&lt;/span>&lt;span class="k">\itemsep&lt;/span>&lt;span class="nb">}{&lt;/span>0pt&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\itemsep&lt;/span> -0.5em &lt;span class="k">\vspace&lt;/span>&lt;span class="nb">{&lt;/span>-0.5em&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\raggedright&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">}{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\end&lt;/span>&lt;span class="nb">{&lt;/span>list&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\end&lt;/span>&lt;span class="nb">{&lt;/span>multicols&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">\vspace*&lt;/span>&lt;span class="nb">{&lt;/span>-5pt&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>I&amp;rsquo;ll also update some of the placeholder content to be more like an actual resume.&lt;/p>
+&lt;p>&lt;img src="https://norling.io/latex-resume/05_styling.png"
+width="641"
+height="911"
+srcset="https://norling.io/latex-resume/05_styling_hue9752f2687018aeb8fbea1ba464c4fa3_166641_480x0_resize_box_3.png 480w, https://norling.io/latex-resume/05_styling_hue9752f2687018aeb8fbea1ba464c4fa3_166641_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="The final resume"
+class="gallery-image"
+data-flex-grow="70"
+data-flex-basis="168px"
+>&lt;/p>
+&lt;h2 id="ending-notes">Ending Notes&lt;/h2>
+&lt;p>LaTeX is a very old language with a lot of inconsistencies, weird syntax, and small issues that can make it a frustrating language to work with. That being said, I love the results and will definitely use it going forward. If you&amp;rsquo;d like to see this resume on github, check it out &lt;a class="link" href="https://github.com/cnorling/resume-public" target="_blank" rel="noopener"
+>here&lt;/a>! You&amp;rsquo;re more than welcome to fork it for personal use and tweak it however you like =]&lt;/p>
+&lt;p>If you enjoyed this article, have any questions, noticed something inaccurate, or you just want to say hi feel free to drop a comment below or send an email to &lt;a class="link" href="mailto:me@norling.io" >me@norling.io&lt;/a>&lt;/p></description></item></channel></rss>
