@@ -189,7 +189,7 @@ beeef8f Initial commit
 
 If everything worked, the commit should be edited with a new SHA. You can run `git log --oneline` to validate its modification.
 
-## Combining Commits by Squashing
+## Combining commits by squashing
 
 1. Determine what commits you want to squash by running `git log --oneline` and find the hash of the oldest commit you want to squash
 
