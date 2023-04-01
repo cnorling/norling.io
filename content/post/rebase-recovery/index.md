@@ -33,9 +33,9 @@ In this state, you can poke around and look at the file content to confirm that 
 
 ### Accessing git logs within reflogs
 
-Since reflogs are a capture of the repository's state at that time, they also have the historical output from `git log`. If you need to identify a commit SHA that's no longer in `git log`, you can checkout an earlier reflog and run `git log` to browse commits that were associated with your branch at that point in time. It's very useful for identifying deleted content.
+Reflogs are really just a reference to a specific commit SHA. The content of that SHA also happens to include the historical revisions at that point in time. That includes the historical output from `git log`. If you need to identify a commit SHA that's no longer in `git log`, you can checkout an earlier reflog and run `git log` to browse commits that were associated with your branch at that point in time. It's very useful for identifying deleted content.
 
-![Even reflogs have logs](reflog-log.png)
+![Even "reflogs" have logs](reflog-log.png)
 
 ### What if I don't have reflogs?
 
