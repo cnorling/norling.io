@@ -9,11 +9,13 @@ tags:
   - git
 ---
 
+## Summary
+
 You can edit your most recent commit message by running `git commit --amend`.
 
 If you've already pushed out your commit, you'll have to tell the remote git repository that you intend to rewrite history. You can do this by running `git push --force-with-lease` after amending your commit.
 
-## editing older commit messages
+## Editing older commit messages
 
 You can edit older commits with an interactive rebase. A rebase is a way to deconstruct and reconstruct older commits. You can modify things like the files changed in a commit, if the commit was signed, when the commit was created, who it was created by, and in our case you can edit commit messages.
 
