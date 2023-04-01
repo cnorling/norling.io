@@ -11,11 +11,11 @@ tags:
   - infosec
 ---
 
-Kyverno is an admission controller used to add policies to your cluster. The basic principle of an admission controller is to intercept incoming requests to a given kubernetes api server and check if a field matches an expression, then approve or deny the request based on that determination. If you're not familiar with admission controllers already, I'd recommend reading [the official documentation](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#what-are-they).
+Kyverno is a Kubernetes admission controller used to add policies to your cluster. Admission controllers intercept incoming requests to the Kubernetes api server and check if a field matches a regular expression, then approve or deny the request based on that determination. If you're not familiar with admission controllers already, I'd recommend reading [the official documentation](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#what-are-they).
 
-If you're in the process of deciding what admisson controller to use in your environment, consider the background of the team that will be maintaining the policies. Do they all know how to program in Golang? If so, [OPA Gatekeeper](https://github.com/open-policy-agent/gatekeeper) may be a better choice for you. I personally believe that Kyverno is a better admission controller because the barrier for reading and writing policies is significantly lower than OPA. I haven't run into a scenario where I need more verbose or complex syntax beyond what ships in Kyverno by default.
+If you're in the process of deciding which admisson controller to use in your environment, consider the background of the team that will be maintaining the policies. Do they all know how to program in Golang? If so, [OPA Gatekeeper](https://github.com/open-policy-agent/gatekeeper) may be a better choice for you. I personally believe that Kyverno is a better admission controller because the barrier for reading and writing policies is significantly lower than OPA. I haven't run into a scenario where I need more verbose or complex syntax beyond what ships in Kyverno by default.
 
-## THE GIST
+## Summary
 
 - Have some way to whitelist resources
 - Make all your transformations with JSON patches
@@ -28,12 +28,12 @@ If you're in the process of deciding what admisson controller to use in your env
 - When referencing remote policies, target a commit hash or branch version rather than the main branch's head
 - Avoid mutating resources with policies when possible
 
-## EXAMPLE
+## Example Boilerplate
 
 I created this example github repository that illustrates all of the principles in this article
 https://github.com/salineselin/kyverno-example
 
-## RECOMMENDATIONS
+## Recommendations
 
 The following sections expand on the gists described earlier
 
