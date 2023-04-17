@@ -10,3 +10,6 @@ tags:
 ---
 
 foo
+
+- secrets are encrypted
+- namespaces are automatically protected
